@@ -185,24 +185,6 @@ const App = () => (
                   }
                 />
 
-                {/* How to Use page */}
-                <Route
-                  path="/how-to-use"
-                  element={
-                    <ProtectedRoute>
-                      <Suspense
-                        fallback={
-                          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#0f1f0f] to-[#1a1a1a]">
-                            <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-emerald-500 border-t-transparent shadow-lg shadow-emerald-900/50"></div>
-                          </div>
-                        }
-                      >
-                        <HowToUsePage />
-                      </Suspense>
-                    </ProtectedRoute>
-                  }
-                />
-
                 {/* Staff Management - Admin Only */}
                 <Route
                   path="/staff"
@@ -219,6 +201,24 @@ const App = () => (
                   element={
                     <ProtectedRoute requireStaffOnly={true}>
                       <StaffPortal />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* How to Use page - Moved to bottom */}
+                <Route
+                  path="/how-to-use"
+                  element={
+                    <ProtectedRoute>
+                      <Suspense
+                        fallback={
+                          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#0f1f0f] to-[#1a1a1a]">
+                            <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-emerald-500 border-t-transparent shadow-lg shadow-emerald-900/50"></div>
+                          </div>
+                        }
+                      >
+                        <HowToUsePage />
+                      </Suspense>
                     </ProtectedRoute>
                   }
                 />
