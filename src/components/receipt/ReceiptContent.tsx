@@ -386,7 +386,7 @@ const ReceiptContent: React.FC<ReceiptContentProps> = ({
               <Button 
                 variant="default" 
                 size="sm" 
-                className="text-xs flex items-center gap-1 bg-cuephoria-purple hover:bg-cuephoria-purple/80"
+                className="text-xs flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700"
                 onClick={handleSaveChanges}
                 disabled={isSaving}
               >
@@ -423,7 +423,7 @@ const ReceiptContent: React.FC<ReceiptContentProps> = ({
                 <div className="bg-green-100 text-green-800 px-3 py-1 rounded font-semibold">
                   Cash: ₹{bill.cashAmount?.toLocaleString('en-IN') || 0}
                 </div>
-                <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded font-semibold">
+                <div className="bg-emerald-100 text-emerald-800 px-3 py-1 rounded font-semibold">
                   UPI: ₹{bill.upiAmount?.toLocaleString('en-IN') || 0}
                 </div>
               </div>
@@ -432,7 +432,7 @@ const ReceiptContent: React.FC<ReceiptContentProps> = ({
                 bill.paymentMethod === 'cash' 
                   ? 'bg-green-100 text-green-800' 
                   : bill.paymentMethod === 'upi'
-                  ? 'bg-blue-100 text-blue-800'
+                  ? 'bg-emerald-100 text-emerald-800'
                   : 'bg-orange-100 text-orange-800'
               }`}>
                 {bill.paymentMethod === 'cash' ? 'CASH' : bill.paymentMethod === 'upi' ? 'UPI' : 'CREDIT'}
