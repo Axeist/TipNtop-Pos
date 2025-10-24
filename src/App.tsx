@@ -10,7 +10,6 @@ import { POSProvider } from "@/context/POSContext";
 import { ExpenseProvider } from "@/context/ExpenseContext";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/AppSidebar";
-// REMOVED: import { useAutoRefresh } from "@/hooks/useAutoRefresh";
 
 // Pages
 import Login from "./pages/Login";
@@ -52,8 +51,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// REMOVED: AutoRefreshApp wrapper component - replaced with targeted Realtime subscriptions
-
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requireAdmin?: boolean;
@@ -71,8 +68,8 @@ const ProtectedRoute = ({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cuephoria-dark">
-        <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-cuephoria-lightpurple border-t-transparent"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#0f1f0f] to-[#1a1a1a]">
+        <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-emerald-500 border-t-transparent shadow-lg shadow-emerald-900/50"></div>
       </div>
     );
   }
@@ -98,8 +95,8 @@ const ProtectedRoute = ({
             <SidebarTrigger />
           </div>
           {children}
-          <footer className="mt-auto w-full py-2 text-center text-xs text-muted-foreground bg-cuephoria-darker border-t border-cuephoria-lightpurple/20 font-semibold tracking-wide z-50">
-            Designed & Developed by RK.
+          <footer className="mt-auto w-full py-2 text-center text-xs text-emerald-100/80 bg-black/80 border-t border-emerald-500/20 font-semibold tracking-wide z-50 backdrop-blur-sm">
+            Designed & Developed by RK<sup className="text-emerald-400">™</sup>
           </footer>
         </div>
       </div>
@@ -115,7 +112,6 @@ const App = () => (
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            {/* REMOVED: <AutoRefreshApp> wrapper */}
             <BrowserRouter>
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -196,8 +192,8 @@ const App = () => (
                     <ProtectedRoute>
                       <Suspense
                         fallback={
-                          <div className="min-h-screen flex items-center justify-center">
-                            Loading...
+                          <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#0f1f0f] to-[#1a1a1a]">
+                            <div className="animate-spin-slow h-10 w-10 rounded-full border-4 border-emerald-500 border-t-transparent shadow-lg shadow-emerald-900/50"></div>
                           </div>
                         }
                       >
@@ -240,7 +236,6 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
-            {/* REMOVED: </AutoRefreshApp> wrapper */}
           </TooltipProvider>
         </ExpenseProvider>
       </POSProvider>
