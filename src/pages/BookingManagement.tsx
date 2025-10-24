@@ -278,119 +278,121 @@ export default function BookingManagement() {
   };
 
   const fetchBookings = async () => {
-    setLoading(true);
-    try {
-      const analyticsFromDate = filters.datePreset === 'alltime' 
-        ? '2020-01-01' 
-        : format(subDays(new Date(), 60), 'yyyy-MM-dd');
-      
-      let query = supabase
-        .from('bookings')
-        .select(`
+  setLoading(true);
+  try {
+    const analyticsFromDate = filters.datePreset === 'alltime' 
+      ? '2020-01-01' 
+      : format(subDays(new Date(), 60), 'yyyy-MM-dd');
+    
+    // FIXED: Removed the !booking_id hint - let Supabase auto-detect the relationship
+    let query = supabase
+      .from('bookings')
+      .select(`
+        id,
+        booking_date,
+        start_time,
+        end_time,
+        duration,
+        status,
+        notes,
+        original_price,
+        final_price,
+        discount_percentage,
+        coupon_code,
+        booking_group_id,
+        status_updated_at,
+        status_updated_by,
+        station_id,
+        customer_id,
+        created_at,
+        booking_views (
           id,
-          booking_date,
-          start_time,
-          end_time,
-          duration,
-          status,
-          notes,
-          original_price,
-          final_price,
-          discount_percentage,
-          coupon_code,
-          booking_group_id,
-          status_updated_at,
-          status_updated_by,
-          station_id,
-          customer_id,
+          booking_id,
+          access_code,
           created_at,
-          booking_views!booking_id (
-            id,
-            booking_id,
-            access_code,
-            created_at,
-            last_accessed_at
-          )
-        `)
-        .gte('booking_date', analyticsFromDate)
-        .order('booking_date', { ascending: false })
-        .order('start_time', { ascending: false });
-
-      const { data: bookingsData, error } = await query;
-      if (error) throw error;
-
-      if (!bookingsData || bookingsData.length === 0) {
-        setBookings([]);
-        setAllBookings([]);
-        setCouponOptions([]);
-        return;
-      }
-
-      const stationIds = [...new Set(bookingsData.map(b => b.station_id))];
-      const customerIds = [...new Set(bookingsData.map(b => b.customer_id))];
-
-      const [{ data: stationsData, error: stationsError }, { data: customersData, error: customersError }] =
-        await Promise.all([
-          supabase.from('stations').select('id, name, type').in('id', stationIds),
-          supabase.from('customers').select('id, name, phone, email, created_at').in('id', customerIds)
-        ]);
-
-      if (stationsError) throw stationsError;
-      if (customersError) throw customersError;
-
-      const transformed = (bookingsData || []).map(b => {
-        const station = stationsData?.find(s => s.id === b.station_id);
-        const customer = customersData?.find(c => c.id === b.customer_id);
-        return {
-          id: b.id,
-          booking_date: b.booking_date,
-          start_time: b.start_time,
-          end_time: b.end_time,
-          duration: b.duration,
-          status: b.status,
-          notes: b.notes ?? undefined,
-          original_price: b.original_price ?? null,
-          final_price: b.final_price ?? null,
-          discount_percentage: b.discount_percentage ?? null,
-          coupon_code: b.coupon_code ?? null,
-          booking_group_id: b.booking_group_id ?? null,
-          status_updated_at: b.status_updated_at ?? null,
-          status_updated_by: b.status_updated_by ?? null,
-          created_at: b.created_at,
-          booking_views: b.booking_views || [],
-          station: { name: station?.name || 'Unknown', type: station?.type || 'unknown' },
-          customer: { 
-            name: customer?.name || 'Unknown', 
-            phone: customer?.phone || '', 
-            email: customer?.email ?? null,
-            created_at: customer?.created_at
-          }
-        } as Booking;
-      });
-
-      setAllBookings(transformed);
-      const filtered = applyFilters(transformed);
-      setBookings(filtered);
-
-      const presentCodes = Array.from(
-        new Set(
-          transformed.flatMap(t => 
-            (t.coupon_code || '')
-              .split(',')
-              .map(c => c.trim().toUpperCase())
-              .filter(Boolean)
-          )
+          last_accessed_at
         )
-      ) as string[];
-      setCouponOptions(presentCodes.sort());
+      `)
+      .gte('booking_date', analyticsFromDate)
+      .order('booking_date', { ascending: false })
+      .order('start_time', { ascending: false });
 
-    } catch (err) {
-      console.error('Error fetching bookings:', err);
-      toast.error('Failed to load bookings');
-    } finally {
-      setLoading(false);
+    const { data: bookingsData, error } = await query;
+    if (error) throw error;
+
+    if (!bookingsData || bookingsData.length === 0) {
+      setBookings([]);
+      setAllBookings([]);
+      setCouponOptions([]);
+      return;
     }
-  };
+
+    const stationIds = [...new Set(bookingsData.map(b => b.station_id))];
+    const customerIds = [...new Set(bookingsData.map(b => b.customer_id))];
+
+    const [{ data: stationsData, error: stationsError }, { data: customersData, error: customersError }] =
+      await Promise.all([
+        supabase.from('stations').select('id, name, type').in('id', stationIds),
+        supabase.from('customers').select('id, name, phone, email, created_at').in('id', customerIds)
+      ]);
+
+    if (stationsError) throw stationsError;
+    if (customersError) throw customersError;
+
+    const transformed = (bookingsData || []).map(b => {
+      const station = stationsData?.find(s => s.id === b.station_id);
+      const customer = customersData?.find(c => c.id === b.customer_id);
+      return {
+        id: b.id,
+        booking_date: b.booking_date,
+        start_time: b.start_time,
+        end_time: b.end_time,
+        duration: b.duration,
+        status: b.status,
+        notes: b.notes ?? undefined,
+        original_price: b.original_price ?? null,
+        final_price: b.final_price ?? null,
+        discount_percentage: b.discount_percentage ?? null,
+        coupon_code: b.coupon_code ?? null,
+        booking_group_id: b.booking_group_id ?? null,
+        status_updated_at: b.status_updated_at ?? null,
+        status_updated_by: b.status_updated_by ?? null,
+        created_at: b.created_at,
+        booking_views: b.booking_views || [],
+        station: { name: station?.name || 'Unknown', type: station?.type || 'unknown' },
+        customer: { 
+          name: customer?.name || 'Unknown', 
+          phone: customer?.phone || '', 
+          email: customer?.email ?? null,
+          created_at: customer?.created_at
+        }
+      } as Booking;
+    });
+
+    setAllBookings(transformed);
+    const filtered = applyFilters(transformed);
+    setBookings(filtered);
+
+    const presentCodes = Array.from(
+      new Set(
+        transformed.flatMap(t => 
+          (t.coupon_code || '')
+            .split(',')
+            .map(c => c.trim().toUpperCase())
+            .filter(Boolean)
+        )
+      )
+    ) as string[];
+    setCouponOptions(presentCodes.sort());
+
+  } catch (err) {
+    console.error('Error fetching bookings:', err);
+    toast.error('Failed to load bookings');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const applyFilters = (data: Booking[]) => {
     let filtered = data;
