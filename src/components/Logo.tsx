@@ -1,15 +1,14 @@
-
 import React from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 /**
- * This custom logo component renders the uploaded graphic for all use cases.
+ * This custom logo component renders the TipNtop Club logo for all use cases.
  */
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   /**
-   * Use the colorful brand graphic from the uploaded logo
+   * Use the TipNtop brand graphic with green theme styling
    * for all logo purposes, scaling with prop or parent container
    */
 }
@@ -27,21 +26,33 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
   const width = height * 1.2; // slightly wider than tall for logo aspect ratio
 
   return (
-    <img
-      src="/lovable-uploads/61f60a38-12c2-4710-b1c8-0000eb74593c.png"
-      alt="Cuephoria 8-Ball Club Logo"
-      height={height}
-      width={width}
-      style={{
-        objectFit: "contain",
-        background: "transparent",
-        maxHeight: height, 
-        maxWidth: width,
-      }}
-      className={`select-none ${className || ""}`}
-      draggable={false}
-      loading="lazy"
-    />
+    <div className="relative inline-flex items-center gap-2 group">
+      <div className="relative">
+        {/* Green glow effect */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-green-500/20 rounded-full opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-300"></div>
+        <img
+          src="https://iili.io/KgkdS1f.png"
+          alt="TipNtop Club - Premier Snooker & 8-Ball"
+          height={height}
+          width={width}
+          style={{
+            objectFit: "contain",
+            background: "transparent",
+            maxHeight: height, 
+            maxWidth: width,
+            filter: "drop-shadow(0 0 8px rgba(34, 197, 94, 0.4))",
+          }}
+          className={`select-none relative z-10 group-hover:drop-shadow-[0_0_12px_rgba(34,197,94,0.6)] transition-all duration-300 ${className || ""}`}
+          draggable={false}
+          loading="lazy"
+        />
+      </div>
+      {!isMobile && size !== 'sm' && (
+        <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-500 font-heading group-hover:from-emerald-300 group-hover:to-green-400 transition-all duration-300">
+          TipNtop Club
+        </span>
+      )}
+    </div>
   );
 };
 
