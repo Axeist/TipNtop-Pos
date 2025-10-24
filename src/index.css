@@ -15,16 +15,16 @@
     --popover: 225 20% 13%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 260 48% 80%;
+    --primary: 142 76% 36%;  /* emerald-600 for TipNtop */
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 25 95% 53%;
+    --secondary: 142 71% 45%;  /* emerald-500 */
     --secondary-foreground: 0 0% 98%;
 
     --muted: 225 20% 20%;
     --muted-foreground: 225 10% 70%;
 
-    --accent: 199 90% 48%;
+    --accent: 142 76% 36%;  /* emerald accent */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -32,18 +32,18 @@
 
     --border: 225 20% 25%;
     --input: 225 20% 25%;
-    --ring: 260 33% 50%;
+    --ring: 142 76% 36%;  /* emerald ring */
 
     --radius: 0.75rem;
 
     --sidebar-background: 225 20% 13%;
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 260 48% 80%;
+    --sidebar-primary: 142 76% 36%;  /* emerald */
     --sidebar-primary-foreground: 0 0% 98%;
     --sidebar-accent: 225 20% 18%;
     --sidebar-accent-foreground: 0 0% 100%;
     --sidebar-border: 225 20% 25%;
-    --sidebar-ring: 260 33% 50%;
+    --sidebar-ring: 142 76% 36%;  /* emerald */
   }
 
   * {
@@ -68,14 +68,14 @@
   }
 }
 
-/* Custom styles for Cuephoria */
+/* Custom styles for TipNtop Club */
 .indian-rupee::before {
   content: "₹";
   display: inline-block;
   margin-right: 2px;
 }
 
-/* Custom scrollbar for dark theme */
+/* Custom scrollbar for dark theme with green accent */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -87,28 +87,28 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.5);
+  background: rgba(16, 185, 129, 0.5);  /* emerald */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.7);
+  background: rgba(16, 185, 129, 0.7);  /* emerald hover */
 }
 
-/* Better outlines for focus */
+/* Better outlines for focus - TipNtop green */
 :focus-visible {
-  outline: 2px solid #9b87f5;
+  outline: 2px solid #10b981;  /* emerald-500 */
   outline-offset: 2px;
 }
 
-/* Gradient text for headings */
+/* Gradient text for headings - TipNtop green gradient */
 .gradient-text {
-  @apply bg-gradient-to-r from-[#9b87f5] to-[#0EA5E9] bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-emerald-500 via-green-400 to-emerald-600 bg-clip-text text-transparent;
 }
 
-/* Cards hover effects */
+/* Cards hover effects - TipNtop green glow */
 .card-hover {
-  @apply transition-all duration-300 hover:shadow-lg hover:shadow-[#9b87f5]/20 hover:translate-y-[-4px];
+  @apply transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 hover:translate-y-[-4px];
 }
 
 /* Mobile optimizations */
@@ -191,10 +191,10 @@
 
 @keyframes pulseGlow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(155, 135, 245, 0.2);
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.2);  /* emerald glow */
   }
   50% {
-    box-shadow: 0 0 15px rgba(155, 135, 245, 0.6);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);  /* emerald glow */
   }
 }
 
@@ -210,7 +210,7 @@
   }
 }
 
-/* VR Station Rotating Border Animation */
+/* Table Rotating Border Animation */
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);
@@ -377,13 +377,13 @@
   }
 }
 
-/* Custom animations for action buttons */
+/* Custom animations for action buttons - TipNtop green glow */
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(155, 135, 245, 0.3);
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.3);  /* emerald */
   }
   50% {
-    box-shadow: 0 0 20px rgba(155, 135, 245, 0.8);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.8);  /* emerald */
   }
 }
 
@@ -393,17 +393,17 @@
 }
 
 /* --- Hide scrollbar elegantly for the product tags filter --- */
-.cuephoria-scrollbar-hide {
+.tipntop-scrollbar-hide {
   overflow-x: auto;
   -ms-overflow-style: none;        /* IE and Edge */
   scrollbar-width: none;           /* Firefox */
 }
-.cuephoria-scrollbar-hide::-webkit-scrollbar {
+.tipntop-scrollbar-hide::-webkit-scrollbar {
   display: none !important;        /* Chrome, Safari, Opera */
 }
 
-/* --- Product Filter Tag Custom Styling --- */
-.cuephoria-filter-tag {
+/* --- Product Filter Tag Custom Styling - TipNtop Green Theme --- */
+.tipntop-filter-tag {
   background: transparent;
   border: none;
   outline: none;
@@ -426,22 +426,22 @@
   justify-content: center;
 }
 
-.cuephoria-filter-tag:last-child {
+.tipntop-filter-tag:last-child {
   margin-right: 0;
 }
 
-.cuephoria-filter-tag:hover:not([data-state="active"]) {
-  background: rgba(155,135,245,0.08);
-  color: #9b87f5;
+.tipntop-filter-tag:hover:not([data-state="active"]) {
+  background: rgba(16, 185, 129, 0.08);  /* emerald hover */
+  color: #10b981;  /* emerald-500 */
 }
 
-.cuephoria-filter-tag[data-state="active"] {
-  background: #9b87f5;
+.tipntop-filter-tag[data-state="active"] {
+  background: #10b981;  /* emerald-500 */
   color: #fff;
-  box-shadow: 0 2px 10px 0 rgba(155, 135, 245, 0.10);
+  box-shadow: 0 2px 10px 0 rgba(16, 185, 129, 0.15);  /* emerald shadow */
 }
 
-.cuephoria-filter-tag[data-state="active"]::after {
+.tipntop-filter-tag[data-state="active"]::after {
   content: "";
   display: block;
   position: absolute;
@@ -450,17 +450,17 @@
   bottom: 6px;
   height: 3px;
   border-radius: 2px;
-  background: linear-gradient(to right, #9b87f5 60%, #0EA5E9 100%);
+  background: linear-gradient(to right, #10b981 60%, #059669 100%);  /* emerald gradient */
   opacity: 0.9;
 }
 
-.cuephoria-filter-tag:focus-visible {
+.tipntop-filter-tag:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #9b87f5bb;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.7);  /* emerald focus */
 }
 
 @media (max-width: 600px) {
-  .cuephoria-filter-tag {
+  .tipntop-filter-tag {
     padding: 0.5rem 0.7rem;
     font-size: 0.98rem;
     min-width: 68px;
