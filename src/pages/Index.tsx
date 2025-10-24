@@ -1,10 +1,9 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import Logo from '@/components/Logo';
 import { Button } from '@/components/ui/button';
-import { Monitor, Gamepad, Trophy, Users, Star, ZapIcon, ShieldCheck } from 'lucide-react';
+import { Monitor, Trophy, Users, Star, ShieldCheck, Sparkles } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Mail, Phone, Clock, MapPin } from 'lucide-react';
@@ -21,185 +20,191 @@ const Index: React.FC = () => {
   }, [user, navigate]);
 
   return (
-    <div className="min-h-screen bg-cuephoria-dark flex flex-col relative overflow-hidden">
-      {/* Minimalistic animated background */}
+    <div className="min-h-screen bg-gradient-to-br from-[#1a1a1a] via-[#0f1f0f] to-[#1a1a1a] flex flex-col relative overflow-hidden">
+      {/* Elegant animated background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Subtle grid pattern */}
+        {/* Luxury grid pattern */}
         <div 
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-5"
           style={{ 
-            backgroundImage: 'linear-gradient(to right, rgb(40, 44, 52) 1px, transparent 1px), linear-gradient(to bottom, rgb(40, 44, 52) 1px, transparent 1px)',
-            backgroundSize: '50px 50px' 
+            backgroundImage: 'linear-gradient(to right, rgb(34, 197, 94) 1px, transparent 1px), linear-gradient(to bottom, rgb(34, 197, 94) 1px, transparent 1px)',
+            backgroundSize: '60px 60px' 
           }}>
         </div>
         
-        {/* Animated gradients */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-cuephoria-purple/10 to-transparent blur-[100px] animate-float opacity-20"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-cuephoria-blue/10 to-transparent blur-[80px] animate-float opacity-20" style={{animationDelay: '2s'}}></div>
+        {/* Elegant gradients */}
+        <div className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full bg-gradient-to-br from-emerald-600/10 to-transparent blur-[120px] animate-float opacity-30"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-green-500/10 to-transparent blur-[100px] animate-float opacity-30" style={{animationDelay: '3s'}}></div>
         
-        {/* Light streaks */}
-        <div className="absolute top-[30%] w-full h-px bg-gradient-to-r from-transparent via-cuephoria-purple/20 to-transparent"></div>
-        <div className="absolute top-[60%] w-full h-px bg-gradient-to-r from-transparent via-cuephoria-blue/20 to-transparent"></div>
+        {/* Subtle light streaks */}
+        <div className="absolute top-[25%] w-full h-px bg-gradient-to-r from-transparent via-emerald-500/15 to-transparent"></div>
+        <div className="absolute top-[65%] w-full h-px bg-gradient-to-r from-transparent via-green-500/15 to-transparent"></div>
         
-        {/* Floating particles */}
-        <div className="absolute w-1 h-1 bg-cuephoria-purple/30 rounded-full top-1/4 left-1/4 animate-float"></div>
-        <div className="absolute w-1 h-1 bg-cuephoria-blue/30 rounded-full top-3/4 right-1/4 animate-float" style={{animationDelay: '1s'}}></div>
-        <div className="absolute w-1 h-1 bg-cuephoria-lightpurple/30 rounded-full top-1/2 left-3/4 animate-float" style={{animationDelay: '2s'}}></div>
-        <div className="absolute w-1 h-1 bg-cuephoria-orange/30 rounded-full top-1/3 right-1/3 animate-float" style={{animationDelay: '3s'}}></div>
+        {/* Elegant floating particles */}
+        <div className="absolute w-2 h-2 bg-emerald-400/20 rounded-full top-1/4 left-1/4 animate-float"></div>
+        <div className="absolute w-2 h-2 bg-green-400/20 rounded-full top-3/4 right-1/4 animate-float" style={{animationDelay: '1.5s'}}></div>
+        <div className="absolute w-2 h-2 bg-emerald-300/20 rounded-full top-1/2 left-3/4 animate-float" style={{animationDelay: '2.5s'}}></div>
+        <div className="absolute w-1.5 h-1.5 bg-green-300/20 rounded-full top-1/3 right-1/3 animate-float" style={{animationDelay: '3.5s'}}></div>
       </div>
 
       {/* Header */}
-      <header className="h-20 flex items-center px-6 border-b border-gray-800 relative z-10 backdrop-blur-sm bg-cuephoria-dark/80">
+      <header className="h-24 flex items-center px-8 border-b border-emerald-900/30 relative z-10 backdrop-blur-md bg-black/40">
         <Logo />
         <div className="ml-auto space-x-4">
           <Button
             variant="outline"
-            className="text-white border-gray-700 hover:bg-gray-800"
-            onClick={() => window.open('https://cuephoria.in', '_blank')}
+            className="text-emerald-100 border-emerald-700/50 hover:bg-emerald-900/30 hover:border-emerald-500/70 transition-all duration-300"
+            onClick={() => window.open('https://tipntop.in', '_blank')}
           >
             Official Website
           </Button>
           <Button
             variant="default"
-            className="bg-cuephoria-purple text-white hover:bg-cuephoria-purple/90"
-            onClick={() => window.open('https://cuephoria.in/book', '_blank')}
+            className="bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-500 hover:to-green-500 shadow-lg shadow-emerald-900/50 transition-all duration-300"
+            onClick={() => window.open('https://tipntop.in/book', '_blank')}
           >
-            Book Now
+            Reserve Table
           </Button>
         </div>
       </header>
 
       {/* Hero section */}
-      <section className="flex-1 flex flex-col items-center justify-center px-4 py-12 relative z-10">
-        <div className="mb-8 animate-float-shadow">
+      <section className="flex-1 flex flex-col items-center justify-center px-4 py-16 relative z-10">
+        <div className="mb-10 animate-float-shadow">
           <div className="relative">
-            <div className="absolute -inset-2 bg-gradient-to-r from-cuephoria-purple to-cuephoria-blue rounded-full opacity-70 blur-lg animate-pulse-glow"></div>
+            <div className="absolute -inset-3 bg-gradient-to-r from-emerald-500/30 to-green-500/30 rounded-full opacity-80 blur-2xl animate-pulse-glow"></div>
             <img
-              src="/lovable-uploads/61f60a38-12c2-4710-b1c8-0000eb74593c.png"
-              alt="Cuephoria Logo" 
-              className="h-32 md:h-40 relative z-10 drop-shadow-[0_0_15px_rgba(155,135,245,0.5)]"
+              src="https://iili.io/KgkdS1f.png"
+              alt="TipNtop Club Logo" 
+              className="h-36 md:h-44 relative z-10 drop-shadow-[0_0_20px_rgba(34,197,94,0.6)]"
             />
           </div>
         </div>
         
-        <h1 className="text-4xl md:text-6xl font-bold text-center text-white font-heading leading-tight mb-6">
+        <h1 className="text-5xl md:text-7xl font-bold text-center text-white font-heading leading-tight mb-6 tracking-tight">
           Welcome to{" "}
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-cuephoria-purple to-cuephoria-lightpurple animate-text-gradient">
-            Cuephoria
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-500 animate-text-gradient">
+            TipNtop Club
           </span>
         </h1>
         
-        <p className="text-xl text-center text-gray-300 max-w-2xl mb-8">
-          A modern gaming lounge with premium PlayStation 5 consoles and professional 8-ball pool tables.
+        <p className="text-xl md:text-2xl text-center text-emerald-100/80 max-w-3xl mb-4 font-light">
+          Tiruchirappalli's Premier Snooker & 8-Ball Club
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 mb-16">
+        <p className="text-lg text-center text-gray-300 max-w-2xl mb-12">
+          Experience the elegance of professional snooker and 8-ball pool in a sophisticated, world-class setting.
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 mb-20">
           <Button
             size="lg"
-            className="bg-cuephoria-purple text-white hover:bg-cuephoria-purple/90 shadow-lg shadow-cuephoria-purple/20"
+            className="bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-500 hover:to-green-500 shadow-xl shadow-emerald-900/40 transition-all duration-300 text-lg px-8"
             onClick={() => navigate('/login')}
           >
-            Login to Dashboard
+            <ShieldCheck className="mr-2 h-5 w-5" />
+            Member Login
           </Button>
           <Button
             size="lg"
             variant="outline"
-            className="text-white border-gray-700 hover:bg-gray-800 group relative overflow-hidden"
+            className="text-emerald-100 border-emerald-700/60 hover:bg-emerald-900/30 hover:border-emerald-400/80 group relative overflow-hidden transition-all duration-300 text-lg px-8"
             onClick={() => navigate('/public/stations')}
           >
-            <div className="absolute inset-0 w-full bg-gradient-to-r from-cuephoria-purple/0 via-cuephoria-lightpurple/20 to-cuephoria-purple/0 animate-shimmer pointer-events-none"></div>
+            <div className="absolute inset-0 w-full bg-gradient-to-r from-emerald-600/0 via-emerald-400/20 to-emerald-600/0 animate-shimmer pointer-events-none"></div>
             <Monitor className="mr-2 h-5 w-5 animate-pulse-soft" />
-            <span>View Station Availability</span>
+            <span>View Table Availability</span>
           </Button>
         </div>
         
         {/* Features */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto mb-16">
-          <div className="bg-cuephoria-darker p-6 rounded-xl border border-gray-800 hover:border-cuephoria-purple/40 transition-all duration-300 hover:shadow-lg hover:shadow-cuephoria-purple/20 hover:-translate-y-1 group">
-            <div className="flex items-center mb-4">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-cuephoria-purple/20 to-cuephoria-blue/20 flex items-center justify-center text-cuephoria-purple group-hover:scale-110 transition-transform">
-                <Gamepad size={20} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl mx-auto mb-20">
+          <div className="bg-gradient-to-br from-black/60 to-emerald-950/30 p-8 rounded-2xl border border-emerald-800/40 hover:border-emerald-600/60 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-900/40 hover:-translate-y-2 group backdrop-blur-sm">
+            <div className="flex items-center mb-5">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-500/20 to-green-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform duration-300 border border-emerald-500/30">
+                <Trophy size={24} />
               </div>
-              <h3 className="ml-3 text-lg font-semibold text-white">Premium Gaming</h3>
+              <h3 className="ml-4 text-xl font-semibold text-white">Professional Tables</h3>
             </div>
-            <p className="text-gray-400">Experience gaming like never before with our high-end PlayStation 5 consoles and 4K displays.</p>
+            <p className="text-gray-300 leading-relaxed">Two championship-grade snooker tables and three premium 8-ball pool tables, meticulously maintained for optimal play.</p>
           </div>
           
-          <div className="bg-cuephoria-darker p-6 rounded-xl border border-gray-800 hover:border-cuephoria-orange/40 transition-all duration-300 hover:shadow-lg hover:shadow-cuephoria-orange/20 hover:-translate-y-1 group">
-            <div className="flex items-center mb-4">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-cuephoria-orange/20 to-cuephoria-red/20 flex items-center justify-center text-cuephoria-orange group-hover:scale-110 transition-transform">
-                <Trophy size={20} />
+          <div className="bg-gradient-to-br from-black/60 to-emerald-950/30 p-8 rounded-2xl border border-emerald-800/40 hover:border-green-600/60 transition-all duration-500 hover:shadow-2xl hover:shadow-green-900/40 hover:-translate-y-2 group backdrop-blur-sm">
+            <div className="flex items-center mb-5">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center text-green-400 group-hover:scale-110 transition-transform duration-300 border border-green-500/30">
+                <Sparkles size={24} />
               </div>
-              <h3 className="ml-3 text-lg font-semibold text-white">Pool Tables</h3>
+              <h3 className="ml-4 text-xl font-semibold text-white">Refined Ambiance</h3>
             </div>
-            <p className="text-gray-400">Professional 8-ball pool tables for casual games or competitive tournaments.</p>
+            <p className="text-gray-300 leading-relaxed">Immerse yourself in our sophisticated lounge atmosphere, designed for serious players and enthusiasts alike.</p>
           </div>
           
-          <div className="bg-cuephoria-darker p-6 rounded-xl border border-gray-800 hover:border-cuephoria-blue/40 transition-all duration-300 hover:shadow-lg hover:shadow-cuephoria-blue/20 hover:-translate-y-1 group">
-            <div className="flex items-center mb-4">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-cuephoria-blue/20 to-cuephoria-lightpurple/20 flex items-center justify-center text-cuephoria-blue group-hover:scale-110 transition-transform">
-                <Users size={20} />
+          <div className="bg-gradient-to-br from-black/60 to-emerald-950/30 p-8 rounded-2xl border border-emerald-800/40 hover:border-emerald-600/60 transition-all duration-500 hover:shadow-2xl hover:shadow-emerald-900/40 hover:-translate-y-2 group backdrop-blur-sm">
+            <div className="flex items-center mb-5">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-500/20 to-green-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform duration-300 border border-emerald-500/30">
+                <Users size={24} />
               </div>
-              <h3 className="ml-3 text-lg font-semibold text-white">Community Events</h3>
+              <h3 className="ml-4 text-xl font-semibold text-white">Elite Community</h3>
             </div>
-            <p className="text-gray-400">Join our regular tournaments and gaming events for prizes and bragging rights.</p>
+            <p className="text-gray-300 leading-relaxed">Join our exclusive community of skilled players, participate in tournaments, and refine your game.</p>
           </div>
         </div>
         
         {/* Stats */}
-        <div className="w-full max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-          <div className="text-center p-4 bg-cuephoria-darker/50 backdrop-blur-md rounded-lg border border-gray-800">
-            <Star className="h-6 w-6 text-cuephoria-purple mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">12+</div>
-            <div className="text-sm text-gray-400">Gaming Stations</div>
+        <div className="w-full max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-emerald-950/30 backdrop-blur-md rounded-xl border border-emerald-800/40 hover:border-emerald-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-900/30">
+            <Trophy className="h-8 w-8 text-emerald-400 mx-auto mb-3" />
+            <div className="text-3xl font-bold text-white">2</div>
+            <div className="text-sm text-gray-300 mt-1">Snooker Tables</div>
           </div>
           
-          <div className="text-center p-4 bg-cuephoria-darker/50 backdrop-blur-md rounded-lg border border-gray-800">
-            <Trophy className="h-6 w-6 text-cuephoria-orange mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">8</div>
-            <div className="text-sm text-gray-400">Pool Tables</div>
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-green-950/30 backdrop-blur-md rounded-xl border border-green-800/40 hover:border-green-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-green-900/30">
+            <Star className="h-8 w-8 text-green-400 mx-auto mb-3" />
+            <div className="text-3xl font-bold text-white">3</div>
+            <div className="text-sm text-gray-300 mt-1">8-Ball Tables</div>
           </div>
           
-          <div className="text-center p-4 bg-cuephoria-darker/50 backdrop-blur-md rounded-lg border border-gray-800">
-            <Users className="h-6 w-6 text-cuephoria-blue mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">500+</div>
-            <div className="text-sm text-gray-400">Members</div>
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-emerald-950/30 backdrop-blur-md rounded-xl border border-emerald-800/40 hover:border-emerald-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-900/30">
+            <Users className="h-8 w-8 text-emerald-400 mx-auto mb-3" />
+            <div className="text-3xl font-bold text-white">300+</div>
+            <div className="text-sm text-gray-300 mt-1">Members</div>
           </div>
           
-          <div className="text-center p-4 bg-cuephoria-darker/50 backdrop-blur-md rounded-lg border border-gray-800">
-            <ZapIcon className="h-6 w-6 text-cuephoria-green mx-auto mb-2" />
-            <div className="text-2xl font-bold text-white">24/7</div>
-            <div className="text-sm text-gray-400">Support</div>
+          <div className="text-center p-6 bg-gradient-to-br from-black/60 to-green-950/30 backdrop-blur-md rounded-xl border border-green-800/40 hover:border-green-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-green-900/30">
+            <Sparkles className="h-8 w-8 text-green-400 mx-auto mb-3" />
+            <div className="text-3xl font-bold text-white">Premium</div>
+            <div className="text-sm text-gray-300 mt-1">Experience</div>
           </div>
         </div>
         
         {/* CTA Section */}
-        <div className="w-full max-w-4xl mx-auto bg-gradient-to-br from-cuephoria-darker to-cuephoria-dark border border-gray-800 rounded-2xl p-8 relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-          <div className="absolute top-0 right-0 h-64 w-64 bg-cuephoria-purple/10 blur-3xl rounded-full"></div>
+        <div className="w-full max-w-5xl mx-auto bg-gradient-to-br from-black/70 via-emerald-950/40 to-black/70 border border-emerald-800/50 rounded-3xl p-12 relative overflow-hidden backdrop-blur-md">
+          <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+          <div className="absolute top-0 right-0 h-80 w-80 bg-emerald-500/10 blur-3xl rounded-full"></div>
+          <div className="absolute bottom-0 left-0 h-80 w-80 bg-green-500/10 blur-3xl rounded-full"></div>
           
           <div className="relative z-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-white mb-4">Ready to Experience Cuephoria?</h2>
-            <p className="text-center text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join our community of gamers and pool enthusiasts. Book a station, participate in tournaments, and connect with fellow players.
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-white mb-6 tracking-tight">Ready to Experience TipNtop Club?</h2>
+            <p className="text-center text-gray-300 mb-10 max-w-2xl mx-auto text-lg leading-relaxed">
+              Step into Tiruchirappalli's most sophisticated snooker and 8-ball venue. Reserve your table and experience excellence.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
               <Button
                 size="lg"
-                className="bg-cuephoria-purple text-white hover:bg-cuephoria-purple/90 shadow-md group"
+                className="bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-500 hover:to-green-500 shadow-xl group transition-all duration-300 text-lg px-8"
                 onClick={() => navigate('/login')}
               >
                 <ShieldCheck className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                Admin Access
+                Member Access
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="text-white border-gray-700 hover:bg-gray-800 hover:border-cuephoria-lightpurple"
+                className="text-emerald-100 border-emerald-700/60 hover:bg-emerald-900/30 hover:border-emerald-400/80 transition-all duration-300 text-lg px-8"
                 onClick={() => navigate('/public/stations')}
               >
                 <Monitor className="mr-2 h-5 w-5" />
-                Public Station View
+                View Tables
               </Button>
             </div>
           </div>
@@ -207,77 +212,76 @@ const Index: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 border-t border-gray-800 relative z-10 mt-auto">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <div className="flex items-center mb-4 md:mb-0">
+      <footer className="py-10 border-t border-emerald-900/30 relative z-10 mt-auto backdrop-blur-sm bg-black/30">
+        <div className="max-w-6xl mx-auto px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-10">
+            <div className="flex items-center mb-6 md:mb-0">
               <Logo size="sm" />
-              <span className="ml-2 text-gray-400">© {new Date().getFullYear()} Cuephoria. All rights reserved.</span>
+              <span className="ml-3 text-gray-400">© {new Date().getFullYear()} TipNtop Club. All rights reserved.</span>
             </div>
             
-            <div className="flex space-x-4">
+            <div className="flex space-x-6">
               <Dialog open={openDialog === 'terms'} onOpenChange={(open) => setOpenDialog(open ? 'terms' : null)}>
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-gray-400 hover:text-white"
+                  className="text-gray-400 hover:text-emerald-400 transition-colors"
                   onClick={() => setOpenDialog('terms')}
                 >
                   Terms
                 </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-cuephoria-dark border-gray-800 text-white">
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0f1f0f] border-emerald-800/40 text-white">
                   <DialogHeader>
-                    <DialogTitle className="text-xl font-bold text-white">Terms and Conditions</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold text-white">Terms and Conditions</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-6 text-gray-300 mt-4">
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">1. Acceptance of Terms</h2>
+                      <h2 className="text-lg font-semibold text-emerald-400">1. Acceptance of Terms</h2>
                       <p>
-                        By accessing and using Cuephoria's services, you agree to be bound by these Terms and Conditions. 
+                        By accessing and using TipNtop Club's services, you agree to be bound by these Terms and Conditions. 
                         If you do not agree to these terms, please do not use our services.
                       </p>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">2. Membership and Gaming Sessions</h2>
+                      <h2 className="text-lg font-semibold text-emerald-400">2. Table Reservations</h2>
                       <p>
-                        Cuephoria provides gaming facilities and services on a pre-booking or walk-in basis, subject to availability.
-                        Members may receive preferential rates and privileges as communicated in our membership plans.
+                        TipNtop Club provides snooker and 8-ball pool facilities on a reservation or walk-in basis, subject to availability.
+                        Members receive preferential rates and booking privileges.
                       </p>
                       <p>
-                        All gaming sessions are charged according to our current rate card. Time extensions may be 
-                        subject to availability and additional charges.
+                        All sessions are charged according to our current rate card. Extensions are subject to availability and additional charges.
                       </p>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">3. Conduct and Responsibilities</h2>
+                      <h2 className="text-lg font-semibold text-emerald-400">3. Club Conduct</h2>
                       <p>
-                        Users must maintain appropriate conduct within our premises. Cuephoria reserves the right to refuse service 
+                        Members and guests must maintain appropriate conduct within our premises. TipNtop Club reserves the right to refuse service 
                         to anyone engaging in disruptive, abusive, or inappropriate behavior.
                       </p>
                       <p>
-                        Users are responsible for any damage caused to equipment, furniture, or fixtures through improper use.
-                        Such damage may result in charges equivalent to repair or replacement costs.
+                        Players are responsible for any damage caused to equipment, tables, or fixtures through improper use.
+                        Damages will be charged at repair or replacement cost.
                       </p>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">4. Refunds and Cancellations</h2>
+                      <h2 className="text-lg font-semibold text-emerald-400">4. Cancellations and Refunds</h2>
                       <p>
-                        Bookings may be cancelled or rescheduled at least 2 hours prior to the reserved time without penalty.
-                        Late cancellations or no-shows may be charged a fee equivalent to 50% of the booking amount.
+                        Reservations may be cancelled or rescheduled at least 2 hours prior without penalty.
+                        Late cancellations or no-shows may incur a 50% booking fee.
                       </p>
                       <p>
-                        Refunds for technical issues or service interruptions will be assessed on a case-by-case basis by management.
+                        Refunds for technical issues will be assessed case-by-case by management.
                       </p>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">5. Modifications to Terms</h2>
+                      <h2 className="text-lg font-semibold text-emerald-400">5. Modifications</h2>
                       <p>
-                        Cuephoria reserves the right to modify these terms at any time. Changes will be effective immediately 
-                        upon posting on our website or premises. Continued use of our services constitutes acceptance of modified terms.
+                        TipNtop Club reserves the right to modify these terms at any time. Changes take effect immediately 
+                        upon posting. Continued use constitutes acceptance of modified terms.
                       </p>
                     </section>
                   </div>
@@ -288,73 +292,67 @@ const Index: React.FC = () => {
                 <Button 
                   variant="ghost" 
                   size="sm" 
-                  className="text-gray-400 hover:text-white"
+                  className="text-gray-400 hover:text-emerald-400 transition-colors"
                   onClick={() => setOpenDialog('privacy')}
                 >
                   Privacy
                 </Button>
-                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-cuephoria-dark border-gray-800 text-white">
+                <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto bg-gradient-to-br from-[#1a1a1a] to-[#0f1f0f] border-emerald-800/40 text-white">
                   <DialogHeader>
-                    <DialogTitle className="text-xl font-bold text-white">Privacy Policy</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold text-white">Privacy Policy</DialogTitle>
                   </DialogHeader>
                   <div className="space-y-6 text-gray-300 mt-4">
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">1. Information We Collect</h2>
+                      <h2 className="text-lg font-semibold text-emerald-400">1. Information Collection</h2>
                       <p>
-                        Cuephoria may collect personal information including but not limited to name, contact details, 
-                        and payment information when you register or book our services.
+                        TipNtop Club collects personal information including name, contact details, 
+                        and payment information when you register or reserve tables.
                       </p>
                       <p>
-                        We also collect usage data such as gaming preferences, session duration, and purchase history 
-                        to improve our services and customize your experience.
+                        We collect usage data such as playing preferences, session duration, and purchase history 
+                        to improve services and customize your experience.
                       </p>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">2. How We Use Your Information</h2>
-                      <p>
-                        We use collected information to:
-                      </p>
+                      <h2 className="text-lg font-semibold text-emerald-400">2. Information Usage</h2>
+                      <p>We use collected information to:</p>
                       <ul className="list-disc pl-6 space-y-2">
-                        <li>Process bookings and payments</li>
-                        <li>Personalize your gaming experience</li>
-                        <li>Communicate regarding services and promotions</li>
-                        <li>Improve our facilities and offerings</li>
+                        <li>Process reservations and payments</li>
+                        <li>Personalize your club experience</li>
+                        <li>Communicate services and promotions</li>
+                        <li>Improve our facilities</li>
                         <li>Maintain security and prevent fraud</li>
                       </ul>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">3. Information Sharing</h2>
-                      <p>
-                        We do not sell or rent your personal information to third parties. We may share information with:
-                      </p>
+                      <h2 className="text-lg font-semibold text-emerald-400">3. Information Sharing</h2>
+                      <p>We do not sell or rent personal information. We may share with:</p>
                       <ul className="list-disc pl-6 space-y-2">
-                        <li>Service providers who assist in our operations</li>
-                        <li>Legal authorities when required by law</li>
-                        <li>Business partners with your explicit consent</li>
+                        <li>Service providers assisting operations</li>
+                        <li>Legal authorities when required</li>
+                        <li>Partners with your consent</li>
                       </ul>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">4. Your Rights</h2>
-                      <p>
-                        You have the right to:
-                      </p>
+                      <h2 className="text-lg font-semibold text-emerald-400">4. Your Rights</h2>
+                      <p>You have the right to:</p>
                       <ul className="list-disc pl-6 space-y-2">
-                        <li>Access your personal information</li>
-                        <li>Request correction of inaccurate information</li>
-                        <li>Request deletion of your information</li>
-                        <li>Opt-out of marketing communications</li>
-                        <li>Lodge a complaint with relevant authorities</li>
+                        <li>Access your information</li>
+                        <li>Request corrections</li>
+                        <li>Request deletion</li>
+                        <li>Opt-out of marketing</li>
+                        <li>Lodge complaints with authorities</li>
                       </ul>
                     </section>
                     
                     <section className="space-y-4">
-                      <h2 className="text-lg font-semibold text-white">5. Changes to Privacy Policy</h2>
+                      <h2 className="text-lg font-semibold text-emerald-400">5. Policy Changes</h2>
                       <p>
-                        Cuephoria reserves the right to update this privacy policy at any time. Changes will be posted on our website, 
-                        and your continued use of our services after such modifications constitutes acceptance of the updated policy.
+                        TipNtop Club may update this policy anytime. Changes are posted on our website. 
+                        Continued use after modifications constitutes acceptance.
                       </p>
                     </section>
                   </div>
@@ -366,48 +364,52 @@ const Index: React.FC = () => {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-400 hover:text-emerald-400 transition-colors"
                   >
                     Contact
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-80 bg-cuephoria-dark border-gray-800 text-white p-4">
-                  <h3 className="font-semibold text-lg mb-3 text-white">Contact Us</h3>
+                <PopoverContent className="w-80 bg-gradient-to-br from-[#1a1a1a] to-[#0f1f0f] border-emerald-800/40 text-white p-5 backdrop-blur-md">
+                  <h3 className="font-semibold text-lg mb-4 text-emerald-400">Contact Us</h3>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     <div className="flex items-start">
-                      <Phone className="h-5 w-5 text-cuephoria-purple mr-2 mt-0.5" />
+                      <Phone className="h-5 w-5 text-emerald-400 mr-3 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium">Phone</p>
-                        <a href="tel:+918637625155" className="text-gray-300 text-sm hover:text-white transition-colors">
-                          +91 86376 25155
+                        <p className="text-sm font-medium text-white">Phone</p>
+                        <a href="tel:+918667857094" className="text-gray-300 text-sm hover:text-emerald-400 transition-colors">
+                          +91 86678 57094
                         </a>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <Mail className="h-5 w-5 text-cuephoria-blue mr-2 mt-0.5" />
+                      <Mail className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium">Email</p>
-                        <a href="mailto:contact@cuephoria.in" className="text-gray-300 text-sm hover:text-white transition-colors">
-                          contact@cuephoria.in
+                        <p className="text-sm font-medium text-white">Email</p>
+                        <a href="mailto:contact@tipntop.club" className="text-gray-300 text-sm hover:text-green-400 transition-colors">
+                          contact@tipntop.club
                         </a>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <Clock className="h-5 w-5 text-cuephoria-orange mr-2 mt-0.5" />
+                      <Clock className="h-5 w-5 text-emerald-400 mr-3 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium">Hours</p>
-                        <span className="text-gray-300 text-sm">11:00 AM - 11:00 PM</span>
+                        <p className="text-sm font-medium text-white">Hours</p>
+                        <span className="text-gray-300 text-sm">Open Daily</span>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <MapPin className="h-5 w-5 text-cuephoria-green mr-2 mt-0.5" />
+                      <MapPin className="h-5 w-5 text-green-400 mr-3 mt-0.5" />
                       <div>
-                        <p className="text-sm font-medium">Location</p>
-                        <span className="text-gray-300 text-sm">Cuephoria Gaming Lounge</span>
+                        <p className="text-sm font-medium text-white">Location</p>
+                        <span className="text-gray-300 text-sm leading-relaxed">
+                          EVR Rd, Aruna Nagar, Puthur,<br />
+                          Thillai Nagar, Tiruchirappalli,<br />
+                          Tamil Nadu 620017
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -417,37 +419,37 @@ const Index: React.FC = () => {
           </div>
           
           <div className="text-xs text-center text-gray-500">
-            <p className="mb-1">Designed and developed by RK<sup>™</sup></p>
-            <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-gray-400">
+            <p className="mb-2 text-gray-400">Designed and developed by RK<sup>™</sup></p>
+            <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-gray-400">
               <div className="flex items-center gap-2">
-                <span>Phone: </span>
-                <a href="tel:+918637625155" className="hover:text-white transition-colors">+91 86376 25155</a>
+                <Phone className="h-3 w-3 text-emerald-500" />
+                <a href="tel:+918667857094" className="hover:text-emerald-400 transition-colors">+91 86678 57094</a>
               </div>
               <div className="flex items-center gap-2">
-                <span>Email: </span>
-                <a href="mailto:contact@cuephoria.in" className="hover:text-white transition-colors">contact@cuephoria.in</a>
+                <Mail className="h-3 w-3 text-emerald-500" />
+                <a href="mailto:contact@tipntop.club" className="hover:text-emerald-400 transition-colors">contact@tipntop.club</a>
               </div>
               <div className="flex items-center gap-2">
-                <span>Hours: </span>
-                <span>11:00 AM - 11:00 PM</span>
+                <MapPin className="h-3 w-3 text-emerald-500" />
+                <span>EVR Rd, Thillai Nagar, Trichy</span>
               </div>
             </div>
           </div>
         </div>
       </footer>
       
-      {/* Animated elements */}
-      <div className="fixed top-[10%] left-[10%] text-cuephoria-lightpurple opacity-20 animate-float">
-        <Gamepad size={24} className="animate-wiggle" />
+      {/* Elegant animated elements */}
+      <div className="fixed top-[12%] left-[8%] text-emerald-400 opacity-15 animate-float">
+        <Trophy size={28} className="animate-wiggle" />
       </div>
-      <div className="fixed bottom-[15%] right-[15%] text-accent opacity-20 animate-float delay-300">
-        <ZapIcon size={24} className="animate-pulse-soft" />
+      <div className="fixed bottom-[18%] right-[12%] text-green-400 opacity-15 animate-float delay-300">
+        <Sparkles size={26} className="animate-pulse-soft" />
       </div>
-      <div className="fixed top-[30%] right-[10%] text-cuephoria-orange opacity-20 animate-float delay-150">
-        <Trophy size={20} className="animate-wiggle" />
+      <div className="fixed top-[35%] right-[8%] text-emerald-300 opacity-15 animate-float delay-150">
+        <Star size={24} className="animate-wiggle" />
       </div>
-      <div className="fixed bottom-[25%] left-[20%] text-cuephoria-blue opacity-20 animate-float delay-200">
-        <Star size={22} className="animate-pulse-soft" />
+      <div className="fixed bottom-[30%] left-[15%] text-green-300 opacity-15 animate-float delay-200">
+        <Trophy size={22} className="animate-pulse-soft" />
       </div>
     </div>
   );
