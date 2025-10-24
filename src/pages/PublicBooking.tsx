@@ -191,7 +191,7 @@ export default function PublicBooking() {
   // ✅ UPDATED: Payment success handler with duplicate check and Customer ID
   const handlePaymentSuccess = async (txnId: string) => {
     try {
-      const statusResponse = await fetch(`https://admin.cuephoria.in/api/phonepe/status?txn=${encodeURIComponent(txnId)}`);
+      const statusResponse = await fetch(`https://admin.TipNtop Club.in/api/phonepe/status?txn=${encodeURIComponent(txnId)}`);
       const statusData = await statusResponse.json();
       
       if (!statusData?.success) {
@@ -634,8 +634,8 @@ export default function PublicBooking() {
   }
 
   const allowedCoupons = [
-    "CUEPHORIA25",
-    "CUEPHORIA50",
+    "TipNtop Club25",
+    "TipNtop Club50",
     "HH99",
     "NIT50",
     "ALMA50",
@@ -644,7 +644,7 @@ export default function PublicBooking() {
 
   function validateStudentID() {
     return window.confirm(
-      "🎓 CUEPHORIA50 is for other college & school students ONLY.\nShow a valid student ID card during your visit for this discount. Apply?"
+      "🎓 TipNtop Club50 is for other college & school students ONLY.\nShow a valid student ID card during your visit for this discount. Apply?"
     );
   }
 
@@ -674,11 +674,11 @@ export default function PublicBooking() {
     );
     const happyHourActive = isHappyHour(selectedDate, selectedSlot);
 
-    if (code === "CUEPHORIA50") {
+    if (code === "TipNtop Club50") {
       if (!validateStudentID()) return;
-      setAppliedCoupons({ all: "CUEPHORIA50" });
+      setAppliedCoupons({ all: "TipNtop Club50" });
       toast.success(
-        "📚 CUEPHORIA50 applied: 50% OFF for students with valid ID!\nShow your student ID when you visit! 🤝"
+        "📚 TipNtop Club50 applied: 50% OFF for students with valid ID!\nShow your student ID when you visit! 🤝"
       );
       return;
     }
@@ -693,9 +693,9 @@ export default function PublicBooking() {
       return;
     }
 
-    if (code === "CUEPHORIA25") {
-      setAppliedCoupons({ all: "CUEPHORIA25" });
-      toast.success("🎉 CUEPHORIA25 applied: 25% OFF! Book more, play more! 🕹️");
+    if (code === "TipNtop Club25") {
+      setAppliedCoupons({ all: "TipNtop Club25" });
+      toast.success("🎉 TipNtop Club25 applied: 25% OFF! Book more, play more! 🕹️");
       return;
     }
 
@@ -797,11 +797,11 @@ export default function PublicBooking() {
     if (appliedCoupons["all"]) {
       if (appliedCoupons["all"] === "AXEIST")
         return { total: original, breakdown: { all: original } };
-      if (appliedCoupons["all"] === "CUEPHORIA25") {
+      if (appliedCoupons["all"] === "TipNtop Club25") {
         const disc = original * 0.25;
         return { total: disc, breakdown: { all: disc } };
       }
-      if (appliedCoupons["all"] === "CUEPHORIA50") {
+      if (appliedCoupons["all"] === "TipNtop Club50") {
         const disc = original * 0.5;
         return { total: disc, breakdown: { all: disc } };
       }
@@ -1293,9 +1293,9 @@ export default function PublicBooking() {
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-[#0b0b12] via-black to-[#0b0b12]">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cuephoria-purple/20 blur-3xl" />
-        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-cuephoria-blue/20 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-cuephoria-lightpurple/20 blur-3xl" />
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-TipNtop Club-purple/20 blur-3xl" />
+        <div className="absolute top-1/3 -right-24 h-64 w-64 rounded-full bg-TipNtop Club-blue/20 blur-3xl" />
+        <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-TipNtop Club-lightpurple/20 blur-3xl" />
       </div>
 
       <CouponPromotionalPopup onCouponSelect={applyCoupon} />
@@ -1306,13 +1306,13 @@ export default function PublicBooking() {
             <div className="mb-6">
               <img
                 src="/lovable-uploads/61f60a38-12c2-4710-b1c8-0000eb74593c.png"
-                alt="Cuephoria Logo"
+                alt="TipNtop Club Logo"
                 className="h-24 drop-shadow-[0_0_25px_rgba(168,85,247,0.15)]"
               />
             </div>
 
             <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs tracking-widest uppercase text-gray-300 backdrop-blur-md">
-              <Sparkles className="h-3.5 w-3.5 text-cuephoria-lightpurple" />
+              <Sparkles className="h-3.5 w-3.5 text-TipNtop Club-lightpurple" />
               Premium Gaming Lounge
             </span>
 
@@ -1320,7 +1320,7 @@ export default function PublicBooking() {
               Book Your Gaming Session
             </h1>
             <p className="mt-2 text-lg text-gray-300/90 max-w-2xl text-center">
-              Reserve PlayStation 5, Pool Table, or VR Gaming sessions at Cuephoria
+              Reserve PlayStation 5, Pool Table, or VR Gaming sessions at TipNtop Club
             </p>
 
             <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[11px] text-gray-300 backdrop-blur-md">
@@ -1335,9 +1335,9 @@ export default function PublicBooking() {
 
       <main className="px-4 sm:px-6 md:px-8 max-w-7xl mx-auto pb-14 relative z-10">
         <section className="mb-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm text-gray-300">
-          <h2 className="mb-1 text-base font-semibold text-white">About Cuephoria</h2>
+          <h2 className="mb-1 text-base font-semibold text-white">About TipNtop Club</h2>
           <p>
-            Cuephoria offers <span className="font-medium">time-based rentals</span> of
+            TipNtop Club offers <span className="font-medium">time-based rentals</span> of
             PlayStation 5 stations, 8-Ball pool tables, and VR Gaming stations. Book 
             60-minute sessions for PS5/Pool or 15-minute sessions for VR Gaming.
           </p>
@@ -1352,8 +1352,8 @@ export default function PublicBooking() {
             <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-cuephoria-purple/20 ring-1 ring-white/10 flex items-center justify-center">
-                    <User className="h-4 w-4 text-cuephoria-purple" />
+                  <div className="w-8 h-8 rounded-lg bg-TipNtop Club-purple/20 ring-1 ring-white/10 flex items-center justify-center">
+                    <User className="h-4 w-4 text-TipNtop Club-purple" />
                   </div>
                   Step 1: Customer Information
                   {isCustomerInfoComplete() && (
@@ -1362,8 +1362,8 @@ export default function PublicBooking() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="bg-cuephoria-purple/10 border border-cuephoria-purple/20 rounded-xl p-3">
-                  <p className="text-sm text-cuephoria-purple/90 font-medium flex items-center gap-2">
+                <div className="bg-TipNtop Club-purple/10 border border-TipNtop Club-purple/20 rounded-xl p-3">
+                  <p className="text-sm text-TipNtop Club-purple/90 font-medium flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4" /> Please complete customer
                     information to proceed with booking
                   </p>
@@ -1395,7 +1395,7 @@ export default function PublicBooking() {
                   <Button
                     onClick={searchCustomer}
                     disabled={searchingCustomer}
-                    className="rounded-xl bg-gradient-to-r from-cuephoria-purple to-cuephoria-lightpurple"
+                    className="rounded-xl bg-gradient-to-r from-TipNtop Club-purple to-TipNtop Club-lightpurple"
                   >
                     {searchingCustomer ? "Searching..." : "Search"}
                   </Button>
@@ -1451,11 +1451,11 @@ export default function PublicBooking() {
               <CardHeader className="relative pb-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-cuephoria-blue/25 to-transparent">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg ring-1 ring-white/10 bg-gradient-to-br from-TipNtop Club-blue/25 to-transparent">
                       {!isStationSelectionAvailable() ? (
                         <Lock className="h-4 w-4 text-gray-500" />
                       ) : (
-                        <MapPin className="h-4 w-4 text-cuephoria-blue" />
+                        <MapPin className="h-4 w-4 text-TipNtop Club-blue" />
                       )}
                     </div>
                     <CardTitle className="m-0 p-0 text-white">
@@ -1498,8 +1498,8 @@ export default function PublicBooking() {
                     className={cn(
                       "h-9 rounded-full border-white/15 text-[12px]",
                       stationType === "ps5"
-                        ? "bg-cuephoria-purple/15 text-cuephoria-purple"
-                        : "bg-transparent text-cuephoria-purple"
+                        ? "bg-TipNtop Club-purple/15 text-TipNtop Club-purple"
+                        : "bg-transparent text-TipNtop Club-purple"
                     )}
                   >
                     PS5
@@ -1558,11 +1558,11 @@ export default function PublicBooking() {
             <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <div className="w-8 h-8 rounded-lg bg-cuephoria-lightpurple/20 ring-1 ring-white/10 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-TipNtop Club-lightpurple/20 ring-1 ring-white/10 flex items-center justify-center">
                     {!isTimeSelectionAvailable() ? (
                       <Lock className="h-4 w-4 text-gray-500" />
                     ) : (
-                      <CalendarIcon className="h-4 w-4 text-cuephoria-lightpurple" />
+                      <CalendarIcon className="h-4 w-4 text-TipNtop Club-lightpurple" />
                     )}
                   </div>
                   Step 3: Choose Date & Time
@@ -1642,9 +1642,9 @@ export default function PublicBooking() {
                         if (!s) return null;
                         return (
                           <div key={id} className="flex items-center gap-2">
-                            <div className="w-5 h-5 rounded-md bg-cuephoria-purple/20 border border-white/10 flex items-center justify-center">
+                            <div className="w-5 h-5 rounded-md bg-TipNtop Club-purple/20 border border-white/10 flex items-center justify-center">
                               {s.type === "ps5" ? (
-                                <Gamepad2 className="h-3.5 w-3.5 text-cuephoria-purple" />
+                                <Gamepad2 className="h-3.5 w-3.5 text-TipNtop Club-purple" />
                               ) : s.type === "vr" ? (
                                 <Headset className="h-3.5 w-3.5 text-blue-400" />
                               ) : (
@@ -1717,12 +1717,12 @@ export default function PublicBooking() {
                   <p className="mt-1 text-[11px] text-gray-400">
                     All discounts and totals are calculated in INR (₹).
                   </p>
-                  <p className="mt-2 text-xs text-cuephoria-lightpurple">
+                  <p className="mt-2 text-xs text-TipNtop Club-lightpurple">
                     📝 Coupon rules:<br />
                     NIT50/ALMA50: 50% off for students;<br />
                     HH99: PS5 & 8-Ball @ ₹99/hr only Mon–Fri 11 AM–4 PM (not VR);<br />
-                    CUEPHORIA50: 50% off for students (ID required);<br />
-                    CUEPHORIA25: 25% off for everyone!
+                    TipNtop Club50: 50% off for students (ID required);<br />
+                    TipNtop Club25: 25% off for everyone!
                   </p>
 
                   {Object.entries(appliedCoupons).length > 0 && (
@@ -1731,8 +1731,8 @@ export default function PublicBooking() {
                         let emoji = "🏷️";
                         if (val === "HH99") emoji = "⏰";
                         else if (val === "NIT50") emoji = "🎓";
-                        else if (val === "CUEPHORIA25") emoji = "🎉";
-                        else if (val === "CUEPHORIA50") emoji = "📚";
+                        else if (val === "TipNtop Club25") emoji = "🎉";
+                        else if (val === "TipNtop Club50") emoji = "📚";
                         else if (val === "ALMA50") emoji = "🏫";
                         else if (val === "AXEIST") emoji = "🥷";
                         return (
@@ -1844,7 +1844,7 @@ export default function PublicBooking() {
                         <Label className="text-base font-semibold text-gray-100">
                           Total Amount
                         </Label>
-                        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cuephoria-purple to-cuephoria-lightpurple">
+                        <span className="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-TipNtop Club-purple to-TipNtop Club-lightpurple">
                           {INR(finalPrice)}
                         </span>
                       </div>
@@ -1857,7 +1857,7 @@ export default function PublicBooking() {
                   disabled={
                     !selectedSlot || selectedStations.length === 0 || !customerNumber || loading
                   }
-                  className="w-full rounded-xl bg-gradient-to-r from-cuephoria-purple to-cuephoria-lightpurple"
+                  className="w-full rounded-xl bg-gradient-to-r from-TipNtop Club-purple to-TipNtop Club-lightpurple"
                   size="lg"
                 >
                   {loading
@@ -1897,7 +1897,7 @@ export default function PublicBooking() {
                 setLegalDialogType("terms");
                 setShowLegalDialog(true);
               }}
-              className="mt-3 text-sm text-cuephoria-lightpurple hover:underline"
+              className="mt-3 text-sm text-TipNtop Club-lightpurple hover:underline"
             >
               View full Terms & Conditions
             </button>
@@ -1915,7 +1915,7 @@ export default function PublicBooking() {
                 setLegalDialogType("privacy");
                 setShowLegalDialog(true);
               }}
-              className="mt-3 text-sm text-cuephoria-lightpurple hover:underline"
+              className="mt-3 text-sm text-TipNtop Club-lightpurple hover:underline"
             >
               View full Privacy Policy
             </button>
@@ -1926,7 +1926,7 @@ export default function PublicBooking() {
           <Card className="bg-white/5 backdrop-blur-xl border-white/10 rounded-2xl">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="text-white flex items-center gap-2">
-                <Clock className="h-5 w-5 text-cuephoria-lightpurple" />
+                <Clock className="h-5 w-5 text-TipNtop Club-lightpurple" />
                 Today's Bookings
               </CardTitle>
               <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
@@ -1946,7 +1946,7 @@ export default function PublicBooking() {
                   >
                     <summary className="list-none cursor-pointer select-none px-3 sm:px-4 py-3 sm:py-3.5 flex items-center justify-between">
                       <div className="flex items-center gap-2 text-gray-200">
-                        <Clock className="h-4 w-4 text-cuephoria-lightpurple" />
+                        <Clock className="h-4 w-4 text-TipNtop Club-lightpurple" />
                         <span className="font-medium">{timeLabel}</span>
                       </div>
                       <span className="text-xs text-gray-300 rounded-full border border-white/10 px-2 py-0.5">
@@ -1994,11 +1994,11 @@ export default function PublicBooking() {
             <div className="flex items-center mb-4 md:mb-0">
               <img
                 src="/lovable-uploads/61f60a38-12c2-4710-b1c8-0000eb74593c.png"
-                alt="Cuephoria Logo"
+                alt="TipNtop Club Logo"
                 className="h-8 mr-3"
               />
               <p className="text-gray-400 text-sm">
-                © {new Date().getFullYear()} Cuephoria. All rights reserved.
+                © {new Date().getFullYear()} TipNtop Club. All rights reserved.
               </p>
             </div>
             <div className="flex items-center space-x-4">
@@ -2055,8 +2055,8 @@ export default function PublicBooking() {
               </div>
               <div className="flex items-center gap-1">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:contact@cuephoria.in" className="hover:text-white transition-colors">
-                  contact@cuephoria.in
+                <a href="mailto:contact@TipNtop Club.in" className="hover:text-white transition-colors">
+                  contact@TipNtop Club.in
                 </a>
               </div>
             </div>
@@ -2124,8 +2124,8 @@ export default function PublicBooking() {
                   +91 86376 25155
                 </a>{' '}
                 or email{' '}
-                <a className="ml-1 underline hover:text-white" href="mailto:contact@cuephoria.in">
-                  contact@cuephoria.in
+                <a className="ml-1 underline hover:text-white" href="mailto:contact@TipNtop Club.in">
+                  contact@TipNtop Club.in
                 </a>
                 .
               </p>
