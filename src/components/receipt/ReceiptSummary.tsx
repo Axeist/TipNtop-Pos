@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Bill, Customer } from '@/types/pos.types';
 import { CurrencyDisplay } from '@/components/ui/currency';
@@ -211,18 +210,18 @@ const ReceiptSummary: React.FC<ReceiptSummaryProps> = ({
         </div>
         
         {bill.discount > 0 && (
-          <div className="receipt-item text-cuephoria-purple">
+          <div className="receipt-item text-emerald-500">
             <span>
               Discount {bill.discountType === 'percentage' ? `(${bill.discount}%)` : ''}:
             </span>
-            <CurrencyDisplay amount={bill.discountValue} className="text-cuephoria-purple" />
+            <CurrencyDisplay amount={bill.discountValue} className="text-emerald-500" />
           </div>
         )}
         
         {bill.loyaltyPointsUsed > 0 && (
-          <div className="receipt-item text-cuephoria-orange">
+          <div className="receipt-item text-green-500">
             <span>Loyalty Points:</span>
-            <CurrencyDisplay amount={bill.loyaltyPointsUsed} className="text-cuephoria-orange" />
+            <CurrencyDisplay amount={bill.loyaltyPointsUsed} className="text-green-500" />
           </div>
         )}
         
@@ -279,7 +278,7 @@ const ReceiptSummary: React.FC<ReceiptSummaryProps> = ({
           <Button 
             variant="default" 
             size="sm" 
-            className="h-7 px-2 text-xs bg-cuephoria-purple hover:bg-cuephoria-purple/80" 
+            className="h-7 px-2 text-xs bg-emerald-600 hover:bg-emerald-700" 
             onClick={handleSaveChanges}
           >
             <Save className="h-3 w-3 mr-1" /> Save
