@@ -1305,7 +1305,7 @@ export default function PublicBooking() {
           <div className="flex flex-col items-center mb-8">
             <div className="mb-6">
               <img
-                src="/lovable-uploads/61f60a38-12c2-4710-b1c8-0000eb74593c.png"
+                src="https://iili.io/KgkdS1f.png"
                 alt="TipNtop Club Logo"
                 className="h-24 drop-shadow-[0_0_25px_rgba(168,85,247,0.15)]"
               />
@@ -1993,7 +1993,7 @@ export default function PublicBooking() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center mb-4 md:mb-0">
               <img
-                src="/lovable-uploads/61f60a38-12c2-4710-b1c8-0000eb74593c.png"
+                src="https://iili.io/KgkdS1f.png"
                 alt="TipNtop Club Logo"
                 className="h-8 mr-3"
               />
