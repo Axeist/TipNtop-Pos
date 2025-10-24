@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Accordion,
@@ -14,7 +13,7 @@ const faqs = [
     a: "You will be logged out after 5 hours of inactivity for security. Always save your changes regularly!",
   },
   {
-    q: "Can I restore deleted products or customers?",
+    q: "Can I restore deleted products or members?",
     a: "Currently, deleted items cannot be restored. Please double-check before confirming deletions.",
   },
   {
@@ -32,15 +31,15 @@ const faqs = [
 ];
 
 const HowToFAQ: React.FC = () => (
-  <div className="bg-cuephoria-dark/90 rounded-lg mt-8 border border-cuephoria-lightpurple/10 shadow-sm p-4">
-    <h3 className="flex items-center gap-2 text-xl font-bold text-cuephoria-lightpurple mb-4">
+  <div className="bg-black/80 rounded-lg mt-8 border border-emerald-500/10 shadow-sm p-4">
+    <h3 className="flex items-center gap-2 text-xl font-bold text-emerald-400 mb-4">
       <Info className="h-5 w-5" />
       Frequently Asked Questions
     </h3>
     <Accordion type="single" collapsible>
       {faqs.map((faq, idx) => (
         <AccordionItem key={faq.q} value={`faq-${idx}`}>
-          <AccordionTrigger className="text-lg text-cuephoria-lightpurple py-2 hover:underline">{faq.q}</AccordionTrigger>
+          <AccordionTrigger className="text-lg text-emerald-400 py-2 hover:underline">{faq.q}</AccordionTrigger>
           <AccordionContent className="text-base px-2 text-white/90">{faq.a}</AccordionContent>
         </AccordionItem>
       ))}
