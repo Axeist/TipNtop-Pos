@@ -1,49 +1,94 @@
 import React from 'react';
+import { Bill } from '@/types/pos.types';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
-const ReceiptFooter: React.FC = () => {
+interface ReceiptHeaderProps {
+  bill: Bill;
+}
+
+const ReceiptHeader: React.FC<ReceiptHeaderProps> = ({ bill }) => {
+  const billDate = new Date(bill.createdAt);
+  const isComplimentary = bill.paymentMethod?.toLowerCase() === 'complimentary';
+  
   return (
-    <div className="border-t-2 border-dashed border-gray-400 pt-4 mt-6 text-center receipt-footer">
-      {/* Thank You Message */}
-      <div className="mb-4">
-        <h3 className="text-lg font-bold text-[#6E59A5] mb-1">
-          Thank You for Visiting!
-        </h3>
-        <p className="text-xs text-gray-600">
-          We hope you enjoyed your experience at Cuephoria
+    <div className="border-b-2 border-dashed border-gray-400 pb-4 mb-4">
+      {/* Company Logo/Name */}
+      <div className="text-center mb-4">
+        <h1 className="text-4xl font-bold text-emerald-700 mb-1" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+          TIPNTOP CLUB
+        </h1>
+        <p className="text-sm text-gray-600 uppercase tracking-wider">
+          Premier Snooker & 8-Ball Club
         </p>
       </div>
       
-      {/* Terms & Conditions - With page-break protection */}
-      <div className="bg-gray-50 rounded-lg p-3 mb-4 terms-section">
-        <h4 className="text-xs font-semibold text-gray-700 mb-2">Terms & Conditions:</h4>
-        <ul className="text-[10px] text-gray-600 space-y-1 text-left">
-          <li>• Goods once sold cannot be returned or exchanged</li>
-          <li>• Please check the bill before leaving the counter</li>
-          <li>• Gaming session charges are non-refundable</li>
-          <li>• Membership benefits are subject to terms and conditions</li>
-          <li>• Management reserves the right to admission</li>
-        </ul>
+      {/* Contact Information */}
+      <div className="text-center space-y-1 text-xs text-gray-700 mb-4">
+        <div className="flex items-center justify-center gap-1">
+          <MapPin className="h-3 w-3 text-emerald-600" />
+          <p>
+            EVR Rd, Aruna Nagar, Puthur,<br />
+            Thillai Nagar, Tiruchirappalli, Tamil Nadu 620017
+          </p>
+        </div>
+        
+        <div className="flex items-center justify-center gap-3 mt-2">
+          <div className="flex items-center gap-1">
+            <Phone className="h-3 w-3 text-emerald-600" />
+            <span>+91 86678 57094</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-center gap-1">
+          <Mail className="h-3 w-3 text-emerald-600" />
+          <span>contact@tipntop.club</span>
+        </div>
+        
+        <div className="flex items-center justify-center gap-1">
+          <Clock className="h-3 w-3 text-emerald-600" />
+          <span>11:00 AM - 11:00 PM, Every day</span>
+        </div>
       </div>
       
-      {/* Social Media & Contact */}
-      <div className="text-xs text-gray-600 mb-3">
-        <p className="font-semibold mb-1">Stay Connected!</p>
-        <p>Follow us on Instagram & Facebook: <span className="font-medium">@cuephoriaclub</span></p>
-        <p className="mt-1">Visit us: <span className="font-medium">www.cuephoria.in</span></p>
+      {/* Invoice Title */}
+      <div className="text-center mb-3">
+        <h2 className="text-2xl font-bold text-gray-800">
+          {isComplimentary ? 'COMPLIMENTARY RECEIPT' : 'TAX INVOICE'}
+        </h2>
       </div>
       
-      {/* Powered By */}
-      <div className="text-[10px] text-gray-400 border-t border-gray-200 pt-2">
-        <p>Powered by Cuephoria Tech</p>
-        <p className="mt-1">For support: contact@cuephoria.in</p>
+      {/* Bill Details */}
+      <div className="grid grid-cols-2 gap-2 text-xs">
+        <div>
+          <p className="text-gray-600">Invoice No:</p>
+          <p className="font-semibold font-mono">{bill.id.substring(0, 12).toUpperCase()}</p>
+        </div>
+        <div className="text-right">
+          <p className="text-gray-600">Date & Time:</p>
+          <p className="font-semibold">
+            {billDate.toLocaleDateString('en-IN', { 
+              day: '2-digit', 
+              month: 'short', 
+              year: 'numeric' 
+            })}
+            {' '}
+            {billDate.toLocaleTimeString('en-IN', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true
+            })}
+          </p>
+        </div>
       </div>
       
-      {/* Decorative Bottom */}
-      <div className="mt-3 text-center">
-        <p className="text-lg font-bold text-[#6E59A5]">★ ★ ★</p>
-      </div>
+      {isComplimentary && bill.compNote && (
+        <div className="mt-3 bg-amber-50 border border-amber-300 rounded p-2">
+          <p className="text-xs text-gray-600">Reason:</p>
+          <p className="text-xs font-medium text-amber-800 italic">{bill.compNote}</p>
+        </div>
+      )}
     </div>
   );
 };
 
-export default ReceiptFooter;
+export default ReceiptHeader;
