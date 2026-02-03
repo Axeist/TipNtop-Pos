@@ -14,6 +14,7 @@ import { BookingDeleteDialog } from '@/components/booking/BookingDeleteDialog';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Switch } from '@/components/ui/switch';
 import { useSubscription } from '@/context/SubscriptionContext';
 import UpgradeDialog from '@/components/UpgradeDialog';
 import {
@@ -240,8 +241,9 @@ const calculateRevenue = (bookings: Booking[]) => {
 };
 
 export default function BookingManagement() {
-  const { hasBookingAccess, isLoading: subscriptionLoading } = useSubscription();
+  const { hasBookingAccess, isLoading: subscriptionLoading, isPublicBookingEnabled, updateSubscription } = useSubscription();
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+  const [publicBookingToggleSaving, setPublicBookingToggleSaving] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [allBookings, setAllBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -1855,6 +1857,43 @@ export default function BookingManagement() {
           </Button>
         </div>
       </div>
+
+      {/* Public booking page enable/disable toggle */}
+      <Card className="bg-background/95 backdrop-blur border-border/50">
+        <CardContent className="py-4">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <CalendarDays className="h-5 w-5 text-muted-foreground" />
+                <Label htmlFor="public-booking-toggle" className="text-base font-medium cursor-pointer">
+                  Public booking page
+                </Label>
+              </div>
+              <span className="text-sm text-muted-foreground">
+                {isPublicBookingEnabled
+                  ? 'Customers can book online.'
+                  : 'Customers see "Booking unavailable" and are asked to contact you.'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              {publicBookingToggleSaving && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+              <Switch
+                id="public-booking-toggle"
+                checked={!!isPublicBookingEnabled}
+                disabled={publicBookingToggleSaving}
+                onCheckedChange={async (checked) => {
+                  setPublicBookingToggleSaving(true);
+                  const ok = await updateSubscription({ public_booking_enabled: checked });
+                  setPublicBookingToggleSaving(false);
+                  if (ok) {
+                    toast.success(checked ? 'Public booking page enabled' : 'Public booking page disabled');
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Calendar View Toggle */}
       {calendarView && <CalendarDayView />}

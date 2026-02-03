@@ -139,8 +139,10 @@ const getBookingDuration = (stationIds: string[], stations: Station[]) => {
    Component
    ========================= */
 export default function PublicBooking() {
-  const { hasBookingAccess, isLoading: subscriptionLoading } = useSubscription();
+  const { hasBookingAccess, isLoading: subscriptionLoading, isPublicBookingEnabled } = useSubscription();
   const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
+  const showBookingUnavailablePopup =
+    showUpgradeDialog || (!subscriptionLoading && !isPublicBookingEnabled);
   const [stations, setStations] = useState<Station[]>([]);
   const [stationType, setStationType] = useState<"all" | StationType>("all");
   const [selectedStations, setSelectedStations] = useState<string[]>([]);
@@ -2395,8 +2397,10 @@ export default function PublicBooking() {
       )}
 
       <PublicBookingUnavailableDialog
-        open={showUpgradeDialog}
-        onOpenChange={setShowUpgradeDialog}
+        open={showBookingUnavailablePopup}
+        onOpenChange={(open) => {
+          if (!open && isPublicBookingEnabled && hasBookingAccess) setShowUpgradeDialog(false);
+        }}
       />
 
       {/* Secret PIN Dialog */}

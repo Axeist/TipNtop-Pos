@@ -15,6 +15,8 @@ interface Subscription {
   booking_access?: boolean;
   staff_management_access?: boolean;
   allow_custom_end_date?: boolean;
+  /** When false, public booking page shows "unavailable" and asks customers to contact the number */
+  public_booking_enabled?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -25,6 +27,8 @@ interface SubscriptionContextType {
   isSubscriptionValid: boolean;
   hasBookingAccess: boolean;
   hasStaffManagementAccess: boolean;
+  /** False when admin has disabled the public booking page */
+  isPublicBookingEnabled: boolean;
   refreshSubscription: () => Promise<void>;
   updateSubscription: (data: Partial<Subscription>) => Promise<boolean>;
 }
@@ -196,6 +200,8 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
   
   const hasBookingAccess = subscription?.booking_access === true && isSubscriptionValid;
   const hasStaffManagementAccess = subscription?.staff_management_access === true && isSubscriptionValid;
+  /** Public booking page is allowed when true; when false, customers see "unavailable" popup */
+  const isPublicBookingEnabled = subscription?.public_booking_enabled !== false;
 
   return (
     <SubscriptionContext.Provider value={{
@@ -204,6 +210,7 @@ export const SubscriptionProvider: React.FC<{ children: React.ReactNode }> = ({ 
       isSubscriptionValid,
       hasBookingAccess,
       hasStaffManagementAccess,
+      isPublicBookingEnabled,
       refreshSubscription,
       updateSubscription,
     }}>
