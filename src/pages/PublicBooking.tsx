@@ -2215,28 +2215,29 @@ export default function PublicBooking() {
                         </div>
                       )}
 
-                      {/* Discount Breakdown - Hidden for now */}
+                      {/* Discount amount bifurcation */}
                       {discount > 0 && (
-                        <div className="hidden">
-                          <div className="border p-2 rounded bg-black/10 text-green-400">
-                            <Label className="font-semibold text-xs uppercase">
-                              Discount Breakdown
-                            </Label>
-                            <ul className="list-disc ml-5 mt-1 text-sm">
-                              {Object.entries(discountBreakdown).map(([k, v]) => (
-                                <li key={k}>
-                                  {k}: -{INR(v)}
+                        <>
+                          <div className="rounded-lg border border-green-500/20 bg-green-950/20 p-3 space-y-2">
+                            <p className="text-xs font-semibold text-green-400 uppercase tracking-wide">
+                              Discount breakdown
+                            </p>
+                            <ul className="space-y-1.5 text-sm">
+                              {Object.entries(discountBreakdown).map(([label, amount]) => (
+                                <li key={label} className="flex justify-between items-center text-gray-300">
+                                  <span>{label}</span>
+                                  <span className="text-green-400 font-medium">-{INR(amount)}</span>
                                 </li>
                               ))}
                             </ul>
+                            <div className="flex justify-between items-center pt-2 border-t border-white/10">
+                              <Label className="text-sm font-semibold text-green-400">
+                                Total discount
+                              </Label>
+                              <span className="text-sm font-bold text-green-400">-{INR(discount)}</span>
+                            </div>
                           </div>
-                          <div className="flex justify-between items-center">
-                            <Label className="text-sm text-green-400">
-                              Total Discount
-                            </Label>
-                            <span className="text-sm text-green-400">-{INR(discount)}</span>
-                          </div>
-                        </div>
+                        </>
                       )}
 
                       <Separator className="bg-gradient-to-r from-transparent via-white/10 to-transparent" />
