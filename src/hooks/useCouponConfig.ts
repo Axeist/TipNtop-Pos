@@ -39,20 +39,24 @@ export function useCouponConfig() {
         .update({ enabled })
         .eq("code", code);
       if (e) throw e;
-      setConfigs((prev) =>
-        prev.map((c) => (c.code === code ? { ...c, enabled } : c))
-      );
+      await fetchConfigs();
     },
-    []
+    [fetchConfigs]
   );
 
-  const updateAllEnabled = useCallback(async (enabled: boolean) => {
-    const { error: e } = await supabase
-      .from("coupon_config")
-      .update({ enabled });
-    if (e) throw e;
-    setConfigs((prev) => prev.map((c) => ({ ...c, enabled })));
-  }, []);
+  const updateAllEnabled = useCallback(
+    async (enabled: boolean) => {
+      for (const row of configs) {
+        const { error: e } = await supabase
+          .from("coupon_config")
+          .update({ enabled })
+          .eq("code", row.code);
+        if (e) throw e;
+      }
+      await fetchConfigs();
+    },
+    [configs, fetchConfigs]
+  );
 
   const enabledCodes = configs.filter((c) => c.enabled).map((c) => c.code);
   const popupCouponCodes = configs.filter((c) => c.enabled && c.show_popup).map((c) => c.code);
