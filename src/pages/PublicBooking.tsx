@@ -627,7 +627,7 @@ export default function PublicBooking() {
     "NERFTURFHH",
   ];
   const allowedCoupons = allCouponCodes.filter((code) =>
-    couponEnabledCodes.length === 0 ? true : couponEnabledCodes.includes(code)
+    couponEnabledCodes.includes(code)
   );
 
   const couponDescriptions: Record<string, string> = {
