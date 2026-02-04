@@ -630,6 +630,17 @@ export default function PublicBooking() {
     couponEnabledCodes.length === 0 ? true : couponEnabledCodes.includes(code)
   );
 
+  const couponDescriptions: Record<string, string> = {
+    NERFTURFHH: "Happy Hours: Tables ₹149/hr, PS5 ₹99/hr. Mon–Fri 11 AM–4 PM.",
+    HH99: "PS5 & 8-Ball at ₹99/hr. Mon–Fri 11 AM–4 PM.",
+    NerfTurf25: "25% off your booking.",
+    NerfTurf50: "50% off for students with valid ID.",
+    NIT50: "50% off on PS5, 8-Ball & VR.",
+    ALMA50: "50% off on PS5, 8-Ball & VR.",
+    AXEIST: "100% off — loyalty.",
+    TES1342: "Test coupon — ₹1 payment.",
+  };
+
   function validateStudentID() {
     return window.confirm(
       "🎓 NerfTurf50 is for other college & school students ONLY.\nShow a valid student ID card during your visit for this discount. Apply?"
@@ -2012,6 +2023,43 @@ export default function PublicBooking() {
                   <p className="mt-1 text-[11px] text-gray-400">
                     All discounts and totals are calculated in INR (₹).
                   </p>
+
+                  {/* Available coupons (only enabled) with description + Apply */}
+                  {allowedCoupons.length > 0 && (
+                    <div className="mt-3 space-y-2">
+                      <p className="text-[11px] font-medium text-gray-400 uppercase tracking-wide">
+                        Available coupons
+                      </p>
+                      <div className="space-y-2">
+                        {allowedCoupons.map((code) => {
+                          const desc = couponDescriptions[code];
+                          if (!desc) return null;
+                          return (
+                            <div
+                              key={code}
+                              className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-white/5 border border-white/10"
+                            >
+                              <div className="min-w-0 flex-1">
+                                <p className="font-semibold text-sm text-white uppercase tracking-wide">
+                                  {code}
+                                </p>
+                                <p className="text-[11px] text-gray-400 mt-0.5">{desc}</p>
+                              </div>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="secondary"
+                                className="shrink-0 rounded-lg h-8 px-3 text-xs bg-green-600/20 hover:bg-green-600/30 text-green-300 border-green-500/30"
+                                onClick={() => applyCoupon(code)}
+                              >
+                                Apply
+                              </Button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
 
                   {Object.entries(appliedCoupons).length > 0 && (
                     <div className="mt-2 space-y-2">

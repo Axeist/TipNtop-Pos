@@ -15,20 +15,22 @@ const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCoupo
   const [showCount, setShowCount] = useState(0);
   const [currentPopup, setCurrentPopup] = useState<1 | 2 | 3 | 4>(3);
 
+  const popupDelayMs = 10000; // 10 seconds
+
   useEffect(() => {
     if (activeCoupon === "NERFTURFHH") {
       const t = setTimeout(() => {
         setIsOpen(true);
         setShowCount(1);
         setCurrentPopup(4);
-      }, 30000);
+      }, popupDelayMs);
       return () => clearTimeout(t);
     }
     const firstTimeout = setTimeout(() => {
       setIsOpen(true);
       setShowCount(1);
       setCurrentPopup(3);
-    }, 30000);
+    }, popupDelayMs);
     return () => clearTimeout(firstTimeout);
   }, [activeCoupon]);
 
