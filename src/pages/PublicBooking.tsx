@@ -16,6 +16,7 @@ import BookingConfirmationDialog from "@/components/BookingConfirmationDialog";
 import LegalDialog from "@/components/dialog/LegalDialog";
 import { useSubscription } from "@/context/SubscriptionContext";
 import PublicBookingUnavailableDialog from "@/components/PublicBookingUnavailableDialog";
+import { useCouponConfig } from "@/hooks/useCouponConfig";
 import {
   CalendarIcon,
   Clock,
@@ -210,6 +211,8 @@ export default function PublicBooking() {
     fetchTodaysBookings();
   }, []);
 
+  const { enabledCodes: couponEnabledCodes, popupCouponCodes } = useCouponConfig();
+
   useEffect(() => {
     if (appliedCoupons["8ball"] === "HH99" && !isHappyHour(selectedDate, selectedSlot)) {
       setAppliedCoupons((prev) => {
@@ -224,6 +227,15 @@ export default function PublicBooking() {
         const copy = { ...prev };
         delete copy["ps5"];
         toast.error("❌ HH99 removed: valid only Mon–Fri 11 AM–4 PM");
+        return copy;
+      });
+    }
+    if ((appliedCoupons["8ball"] === "NERFTURFHH" || appliedCoupons["ps5"] === "NERFTURFHH") && !isHappyHour(selectedDate, selectedSlot)) {
+      setAppliedCoupons((prev) => {
+        const copy = { ...prev };
+        delete copy["8ball"];
+        delete copy["ps5"];
+        toast.error("❌ NERFTURFHH removed: valid only Mon–Fri 11 AM–4 PM");
         return copy;
       });
     }
@@ -604,7 +616,7 @@ export default function PublicBooking() {
     setSelectedSlotRange(range || [slot]);
   }
 
-  const allowedCoupons = [
+  const allCouponCodes = [
     "TES1342",
     "NerfTurf25",
     "NerfTurf50",
@@ -612,7 +624,11 @@ export default function PublicBooking() {
     "NIT50",
     "ALMA50",
     "AXEIST",
+    "NERFTURFHH",
   ];
+  const allowedCoupons = allCouponCodes.filter((code) =>
+    couponEnabledCodes.length === 0 ? true : couponEnabledCodes.includes(code)
+  );
 
   function validateStudentID() {
     return window.confirm(
@@ -702,6 +718,31 @@ export default function PublicBooking() {
       return;
     }
 
+    if (code === "NERFTURFHH") {
+      if (selectedHasVR) {
+        toast.error("⏰ NERFTURFHH is not applicable to VR gaming stations.");
+        return;
+      }
+      if (!(selectedHas8Ball || selectedHasPS5)) {
+        toast.error("⏰ NERFTURFHH applies to Tables (8-Ball) and PS5 during Happy Hours.");
+        return;
+      }
+      if (!happyHourActive) {
+        toast.error("🕒 NERFTURFHH valid only Mon–Fri 11 AM to 4 PM (Happy Hours).");
+        return;
+      }
+      setAppliedCoupons((prev) => {
+        let updated = { ...prev };
+        if (selectedHas8Ball) updated["8ball"] = "NERFTURFHH";
+        if (selectedHasPS5) updated["ps5"] = "NERFTURFHH";
+        return updated;
+      });
+      toast.success(
+        "⏰ NERFTURFHH applied! Tables at ₹149/hr, PS5 at ₹99/hr (Mon–Fri 11 AM–4 PM)! ✨"
+      );
+      return;
+    }
+
     if (code === "NIT50") {
       if (!(selectedHas8Ball || selectedHasPS5 || selectedHasVR)) {
         toast.error(
@@ -712,7 +753,7 @@ export default function PublicBooking() {
       setAppliedCoupons((prev) => {
         let updated = { ...prev };
         if (selectedHasPS5) updated["ps5"] = "NIT50";
-        if (selectedHas8Ball) updated["8ball"] = prev["8ball"] === "HH99" ? "HH99" : "NIT50";
+        if (selectedHas8Ball) updated["8ball"] = (prev["8ball"] === "HH99" || prev["8ball"] === "NERFTURFHH") ? prev["8ball"] : "NIT50";
         if (selectedHasVR) updated["vr"] = "NIT50";
         return updated;
       });
@@ -838,6 +879,29 @@ export default function PublicBooking() {
         if (d > 0) {
           totalDiscount += d;
           breakdown["PS5 (HH99)"] = d;
+        }
+      }
+
+      if (appliedCoupons["8ball"] === "NERFTURFHH") {
+        const eightBalls = stations.filter(
+          (s) => selectedStations.includes(s.id) && s.type === "8ball"
+        );
+        const sum = eightBalls.reduce((x, s) => x + s.hourly_rate, 0);
+        const d = sum - eightBalls.length * 149;
+        if (d > 0) {
+          totalDiscount += d;
+          breakdown["8-Ball (NERFTURFHH)"] = d;
+        }
+      }
+      if (appliedCoupons["ps5"] === "NERFTURFHH") {
+        const ps5s = stations.filter(
+          (s) => selectedStations.includes(s.id) && s.type === "ps5"
+        );
+        const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
+        const d = sum - ps5s.length * 99;
+        if (d > 0) {
+          totalDiscount += d;
+          breakdown["PS5 (NERFTURFHH)"] = d;
         }
       }
 
@@ -1526,8 +1590,10 @@ export default function PublicBooking() {
         <div className="absolute bottom-10 left-1/3 h-56 w-56 rounded-full bg-nerfturf-magenta/20 blur-3xl" />
       </div>
 
-      {/* Coupon Promotional Popup - Hidden for now */}
-      {/* <CouponPromotionalPopup onCouponSelect={applyCoupon} /> */}
+      {/* Coupon Promotional Popup: only show when a coupon has show_popup enabled in Booking Management */}
+      {popupCouponCodes.includes("NERFTURFHH") && (
+        <CouponPromotionalPopup onCouponSelect={applyCoupon} activeCoupon="NERFTURFHH" />
+      )}
 
       <header className="py-10 px-4 sm:px-6 md:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
@@ -1952,6 +2018,7 @@ export default function PublicBooking() {
                       {Object.entries(appliedCoupons).map(([key, val]) => {
                         let emoji = "🏷️";
                         if (val === "HH99") emoji = "⏰";
+                        else if (val === "NERFTURFHH") emoji = "⏰";
                         else if (val === "NIT50") emoji = "🎓";
                         else if (val === "NerfTurf25") emoji = "🎉";
                         else if (val === "NerfTurf50") emoji = "📚";
@@ -2065,6 +2132,40 @@ export default function PublicBooking() {
                           {INR(originalPrice)}
                         </span>
                       </div>
+
+                      {/* Coupon explanation in booking summary */}
+                      {Object.values(appliedCoupons).length > 0 && (
+                        <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-gray-300 space-y-1">
+                          {Object.values(appliedCoupons).some((c) => c === "NERFTURFHH") && (
+                            <p>
+                              <span className="font-semibold text-amber-300">NERFTURFHH</span>: Happy Hours — Tables (8-Ball) at ₹149/hr, PS5 at ₹99/hr. Valid Mon–Fri 11 AM–4 PM only.
+                            </p>
+                          )}
+                          {Object.values(appliedCoupons).some((c) => c === "HH99") && (
+                            <p>
+                              <span className="font-semibold text-amber-300">HH99</span>: PS5 &amp; 8-Ball at ₹99/hr during Happy Hours (Mon–Fri 11 AM–4 PM).
+                            </p>
+                          )}
+                          {Object.values(appliedCoupons).some((c) => c === "NerfTurf25") && (
+                            <p><span className="font-semibold text-amber-300">NerfTurf25</span>: 25% off total.</p>
+                          )}
+                          {Object.values(appliedCoupons).some((c) => c === "NerfTurf50") && (
+                            <p><span className="font-semibold text-amber-300">NerfTurf50</span>: 50% off for students (show valid ID at venue).</p>
+                          )}
+                          {Object.values(appliedCoupons).some((c) => c === "NIT50") && (
+                            <p><span className="font-semibold text-amber-300">NIT50</span>: 50% off on applicable stations.</p>
+                          )}
+                          {Object.values(appliedCoupons).some((c) => c === "ALMA50") && (
+                            <p><span className="font-semibold text-amber-300">ALMA50</span>: 50% off on applicable stations.</p>
+                          )}
+                          {Object.values(appliedCoupons).some((c) => c === "AXEIST") && (
+                            <p><span className="font-semibold text-amber-300">AXEIST</span>: 100% off — loyalty.</p>
+                          )}
+                          {Object.values(appliedCoupons).some((c) => c === "TES1342") && (
+                            <p><span className="font-semibold text-amber-300">TES1342</span>: Test coupon — ₹1 payment.</p>
+                          )}
+                        </div>
+                      )}
 
                       {/* Discount Breakdown - Hidden for now */}
                       {discount > 0 && (

@@ -17,6 +17,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Switch } from '@/components/ui/switch';
 import { useSubscription } from '@/context/SubscriptionContext';
 import UpgradeDialog from '@/components/UpgradeDialog';
+import { useCouponConfig } from '@/hooks/useCouponConfig';
 import {
   Calendar, Search, Filter, Download, Phone, Mail, Plus, Clock, MapPin, ChevronDown, ChevronRight, Users,
   Trophy, Gift, Tag, Zap, Megaphone, DollarSign, Percent, Ticket, RefreshCw, TrendingUp, TrendingDown, Activity,
@@ -298,6 +299,8 @@ export default function BookingManagement() {
   const [calendarView, setCalendarView] = useState(false);
   const [selectedCalendarDate, setSelectedCalendarDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [expandedCalendarBookings, setExpandedCalendarBookings] = useState<Set<string>>(new Set());
+
+  const { configs: couponConfigs, loading: couponConfigLoading, updateEnabled: updateCouponEnabled, updateAllEnabled: updateAllCouponsEnabled } = useCouponConfig();
 
   const extractCouponCodes = (coupon_code: string) =>
     coupon_code.split(',').map(c => c.trim().toUpperCase()).filter(Boolean);
@@ -2247,6 +2250,93 @@ export default function BookingManagement() {
             </TabsContent>
 
             <TabsContent value="coupons" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                      <CardTitle className="flex items-center gap-2">
+                        <Tag className="h-5 w-5" />
+                        Enable / Disable Coupons
+                      </CardTitle>
+                      <p className="text-sm text-muted-foreground font-normal mt-1">
+                        When a coupon is turned off, it cannot be applied on the booking page, the promotional popup for it will not show, and its explanation will not appear in the booking summary.
+                      </p>
+                    </div>
+                    {!couponConfigLoading && couponConfigs.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={async () => {
+                            try {
+                              await updateAllCouponsEnabled(true);
+                              toast.success('All coupons enabled');
+                            } catch (e: any) {
+                              toast.error(e?.message || 'Failed to enable all');
+                            }
+                          }}
+                        >
+                          Enable all
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={async () => {
+                            try {
+                              await updateAllCouponsEnabled(false);
+                              toast.success('All coupons disabled');
+                            } catch (e: any) {
+                              toast.error(e?.message || 'Failed to disable all');
+                            }
+                          }}
+                        >
+                          Disable all
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  {couponConfigLoading ? (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Loading coupon settings…
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                      {couponConfigs.map((row) => (
+                        <div
+                          key={row.code}
+                          className="flex items-center justify-between p-4 rounded-lg border bg-card"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Badge variant={row.enabled ? 'default' : 'secondary'}>
+                              {row.code}
+                            </Badge>
+                            {row.show_popup && (
+                              <span className="text-xs text-muted-foreground" title="Promotional popup enabled">
+                                Popup
+                              </span>
+                            )}
+                          </div>
+                          <Switch
+                            checked={row.enabled}
+                            onCheckedChange={async (checked) => {
+                              try {
+                                await updateCouponEnabled(row.code, checked);
+                                toast.success(checked ? `"${row.code}" enabled` : `"${row.code}" disabled`);
+                              } catch (e: any) {
+                                toast.error(e?.message || 'Failed to update coupon');
+                              }
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <Card>
                   <CardContent className="p-6">

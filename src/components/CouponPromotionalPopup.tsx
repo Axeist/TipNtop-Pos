@@ -6,49 +6,55 @@ import { Star, Clock, Percent, GraduationCap, Sparkles, Trophy, AlertCircle } fr
 
 interface CouponPromotionalPopupProps {
   onCouponSelect?: (coupon: string) => void;
+  /** When set, only this coupon's popup is shown (e.g. "NERFTURFHH"). Used when coupon is enabled with show_popup in booking management. */
+  activeCoupon?: string;
 }
 
-const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCouponSelect }) => {
+const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCouponSelect, activeCoupon }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showCount, setShowCount] = useState(0);
-  const [currentPopup, setCurrentPopup] = useState<1 | 2 | 3>(3);
+  const [currentPopup, setCurrentPopup] = useState<1 | 2 | 3 | 4>(3);
 
   useEffect(() => {
-    // First popup (HH99) after 30 seconds
+    if (activeCoupon === "NERFTURFHH") {
+      const t = setTimeout(() => {
+        setIsOpen(true);
+        setShowCount(1);
+        setCurrentPopup(4);
+      }, 30000);
+      return () => clearTimeout(t);
+    }
     const firstTimeout = setTimeout(() => {
       setIsOpen(true);
       setShowCount(1);
-      setCurrentPopup(3); // HH99 popup first
+      setCurrentPopup(3);
     }, 30000);
-
     return () => clearTimeout(firstTimeout);
-  }, []);
+  }, [activeCoupon]);
 
   useEffect(() => {
-    // Second popup (CUEPHORIA25) after 30 seconds from the first one
+    if (activeCoupon === "NERFTURFHH") return;
     if (showCount === 1) {
       const secondTimeout = setTimeout(() => {
         setIsOpen(true);
         setShowCount(2);
-        setCurrentPopup(1); // CUEPHORIA25 popup second
+        setCurrentPopup(1);
       }, 30000);
-
       return () => clearTimeout(secondTimeout);
     }
-  }, [showCount]);
+  }, [showCount, activeCoupon]);
 
   useEffect(() => {
-    // Third popup (NIT50) after 30 seconds from the second one
+    if (activeCoupon === "NERFTURFHH") return;
     if (showCount === 2) {
       const thirdTimeout = setTimeout(() => {
         setIsOpen(true);
         setShowCount(3);
-        setCurrentPopup(2); // NIT50 popup third
+        setCurrentPopup(2);
       }, 30000);
-
       return () => clearTimeout(thirdTimeout);
     }
-  }, [showCount]);
+  }, [showCount, activeCoupon]);
 
   const handleClose = () => {
     setIsOpen(false);
@@ -95,7 +101,22 @@ const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCoupo
     isHappyHour
   };
 
-  const currentContent = currentPopup === 1 ? popup1Content : currentPopup === 2 ? popup2Content : popup3Content;
+  const popup4Content = {
+    title: "HAPPY HOURS COUPON! ⏰",
+    discountText: "TABLES ₹149 · PS5 ₹99",
+    description: "Use code NERFTURFHH: Tables (8-Ball) at ₹149/hr, PS5 at ₹99/hr. Valid Mon–Fri 11 AM – 4 PM only.",
+    couponCode: "NERFTURFHH",
+    bgColor: "from-amber-400 to-orange-500",
+    iconColor: "text-amber-400",
+    icon: Trophy,
+    isHappyHour
+  };
+
+  const currentContent =
+    currentPopup === 1 ? popup1Content
+    : currentPopup === 2 ? popup2Content
+    : currentPopup === 4 ? popup4Content
+    : popup3Content;
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -119,8 +140,8 @@ const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCoupo
               {currentContent.description}
             </p>
             
-            {/* Happy Hour Indicator for HH99 */}
-            {currentPopup === 3 && (
+            {/* Happy Hour Indicator for HH99 / NERFTURFHH */}
+            {(currentPopup === 3 || currentPopup === 4) && (
               <div className={`mt-2 p-3 rounded-lg border ${
                 isHappyHour 
                   ? 'bg-green-900/40 border-green-400/50 text-green-200' 

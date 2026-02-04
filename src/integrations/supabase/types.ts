@@ -460,6 +460,30 @@ export type Database = {
         }
         Relationships: []
       }
+      coupon_config: {
+        Row: {
+          code: string
+          enabled: boolean
+          show_popup: boolean
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          code: string
+          enabled?: boolean
+          show_popup?: boolean
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          code?: string
+          enabled?: boolean
+          show_popup?: boolean
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       customer_users: {
         Row: {
           auth_id: string | null
