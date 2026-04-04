@@ -498,6 +498,10 @@ const Index: React.FC = () => {
                         Players are responsible for any damage caused to equipment, tables, or fixtures through improper use.
                         Damages will be charged at repair or replacement cost.
                       </p>
+                      <p>
+                        Any damage to a table caused by the customer—including to the cloth/mat, cushions, or corners—will incur
+                        a fixed charge of ₹5,000 (INR).
+                      </p>
                     </section>
                     
                     <section className="space-y-4">

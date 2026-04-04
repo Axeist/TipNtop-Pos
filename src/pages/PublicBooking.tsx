@@ -2298,7 +2298,10 @@ export default function PublicBooking() {
             <ul className="ml-5 list-disc text-sm text-gray-300 space-y-1.5">
               <li>Bookings are for specified time slots (60 min for PS5/Pool, 15 min for VR); extensions subject to availability.</li>
               <li>Arrive on time; late arrivals may reduce play time without fee adjustment.</li>
-              <li>Damage to equipment may incur charges as per in-store policy.</li>
+              <li>
+                Damage to equipment may incur charges as per in-store policy. Damage to a table caused by the customer
+                (including cloth/mat or corners) incurs a fixed charge of ₹5,000.
+              </li>
               <li>Management may refuse service in cases of misconduct or safety concerns.</li>
               <li>All prices are in <strong>INR (₹)</strong>.</li>
             </ul>

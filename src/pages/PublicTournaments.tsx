@@ -1358,11 +1358,18 @@ const PublicTournaments = () => {
               <p>All gaming equipment will be provided by NerfTurf. Personal equipment is not permitted during tournaments.</p>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-2">5. Dispute Resolution</h4>
+              <h4 className="text-white font-semibold mb-2">5. Table Damage</h4>
+              <p>
+                Any damage to a table caused by the participant—including to the cloth/mat, cushions, or corners—will incur
+                a fixed charge of ₹5,000 (INR).
+              </p>
+            </div>
+            <div>
+              <h4 className="text-white font-semibold mb-2">6. Dispute Resolution</h4>
               <p>Tournament organizers' decisions are final. Any disputes must be raised immediately during the event.</p>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-2">6. Liability</h4>
+              <h4 className="text-white font-semibold mb-2">7. Liability</h4>
               <p>NerfTurf is not responsible for any personal injury or loss of personal items during events.</p>
             </div>
           </div>

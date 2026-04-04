@@ -59,6 +59,10 @@ const Terms: React.FC = () => {
               Users are responsible for any damage caused to equipment, furniture, or fixtures through improper use.
               Such damage may result in charges equivalent to repair or replacement costs.
             </p>
+            <p>
+              Any damage to a table caused by the customer—including to the cloth/mat, cushions, or corners—will incur a
+              fixed charge of ₹5,000 (INR).
+            </p>
           </section>
           
           <section className="space-y-4">
