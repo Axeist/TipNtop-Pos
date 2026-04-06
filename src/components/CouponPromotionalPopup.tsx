@@ -103,9 +103,9 @@ const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCoupo
 
   const popup4Content = {
     title: "HAPPY HOURS COUPON! ⏰",
-    discountText: "STD TABLE ₹200 · OTHER ₹149 · PS5 ₹99",
+    discountText: "STD TABLE ₹200 · OTHER ₹150 · PS5 ₹100",
     description:
-      "Use code NERFTURFHH: Standard table ₹200/hr, other tables ₹149/hr, PS5 ₹99/hr. Valid Mon–Fri 11 AM – 5 PM only.",
+      "Use code NERFTURFHH: Standard table ₹200/hr, other tables ₹150/hr, PS5 ₹100/hr. Valid Mon–Fri 11 AM – 5 PM only.",
     couponCode: "NERFTURFHH",
     bgColor: "from-amber-400 to-orange-500",
     iconColor: "text-amber-400",

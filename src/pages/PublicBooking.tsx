@@ -44,7 +44,10 @@ import {
 import { cn } from "@/lib/utils";
 import { format, parse } from "date-fns";
 import { isHappyHour } from "@/utils/happyHour";
-import { getNerfTurfHHTableHourlyRate } from "@/utils/nerfTurfHH";
+import {
+  getNerfTurfHHTableHourlyRate,
+  NERFTURFHH_PS5_HOURLY,
+} from "@/utils/nerfTurfHH";
 
 /* =========================
    Types
@@ -627,7 +630,7 @@ export default function PublicBooking() {
 
   const couponDescriptions: Record<string, string> = {
     NERFTURFHH:
-      "Happy Hours: Standard table ₹200/hr, other tables ₹149/hr, PS5 ₹99/hr. Mon–Fri 11 AM–5 PM.",
+      "Happy Hours: Standard table ₹200/hr, other tables ₹150/hr, PS5 ₹100/hr. Mon–Fri 11 AM–5 PM.",
     HH99: "PS5 & 8-Ball at ₹99/hr. Mon–Fri 11 AM–5 PM.",
     NerfTurf25: "25% off your booking.",
     NerfTurf50: "50% off for students with valid ID.",
@@ -745,7 +748,7 @@ export default function PublicBooking() {
         return updated;
       });
       toast.success(
-        "⏰ NERFTURFHH applied! Standard table ₹200/hr, other tables ₹149/hr, PS5 ₹99/hr (Mon–Fri 11 AM–5 PM)! ✨"
+        "⏰ NERFTURFHH applied! Standard table ₹200/hr, other tables ₹150/hr, PS5 ₹100/hr (Mon–Fri 11 AM–5 PM)! ✨"
       );
       return;
     }
@@ -909,7 +912,7 @@ export default function PublicBooking() {
           (s) => selectedStations.includes(s.id) && s.type === "ps5"
         );
         const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum - ps5s.length * 99;
+        const d = sum - ps5s.length * NERFTURFHH_PS5_HOURLY;
         if (d > 0) {
           totalDiscount += d;
           breakdown["PS5 (NERFTURFHH)"] = d;
@@ -2186,7 +2189,7 @@ export default function PublicBooking() {
                         <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-gray-300 space-y-1">
                           {Object.values(appliedCoupons).some((c) => c === "NERFTURFHH") && (
                             <p>
-                              <span className="font-semibold text-amber-300">NERFTURFHH</span>: Happy Hours — Standard table ₹200/hr, other tables ₹149/hr, PS5 at ₹99/hr. Valid Mon–Fri 11 AM–5 PM only.
+                              <span className="font-semibold text-amber-300">NERFTURFHH</span>: Happy Hours — Standard table ₹200/hr, other tables ₹150/hr, PS5 at ₹100/hr. Valid Mon–Fri 11 AM–5 PM only.
                             </p>
                           )}
                           {Object.values(appliedCoupons).some((c) => c === "HH99") && (

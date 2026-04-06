@@ -1,7 +1,7 @@
-/** PS5 rate under NERFTURFHH (unchanged). */
-export const NERFTURFHH_PS5_HOURLY = 99;
-/** Non–standard 8-ball tables under NERFTURFHH (unchanged). */
-export const NERFTURFHH_TABLE_OTHER_HOURLY = 149;
+/** PS5 rate under NERFTURFHH. */
+export const NERFTURFHH_PS5_HOURLY = 100;
+/** Non–standard 8-ball tables under NERFTURFHH. */
+export const NERFTURFHH_TABLE_OTHER_HOURLY = 150;
 /** Standard table game station under NERFTURFHH. */
 export const NERFTURFHH_TABLE_STANDARD_HOURLY = 200;
 
