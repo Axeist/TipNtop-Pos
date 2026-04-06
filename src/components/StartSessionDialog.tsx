@@ -8,6 +8,7 @@ import { Search, Gift, Tag, Clock, AlertCircle, User as UserIcon } from 'lucide-
 import { usePOS, Customer } from '@/context/POSContext';
 import { useToast } from '@/hooks/use-toast';
 import { CurrencyDisplay } from '@/components/ui/currency';
+import { isHappyHourNow } from '@/utils/happyHour';
 
 interface StartSessionDialogProps {
   open: boolean;
@@ -41,13 +42,7 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
         customer.phone.includes(customerSearchQuery)
       ).slice(0, 10);
 
-  // Validate Happy Hour timing
-  const isHappyHour = () => {
-    const now = new Date();
-    const dayOfWeek = now.getDay();
-    const currentHour = now.getHours();
-    return (dayOfWeek >= 1 && dayOfWeek <= 5) && (currentHour >= 11 && currentHour < 16);
-  };
+  const isHappyHour = () => isHappyHourNow();
 
   // Calculate final rate based on coupon
   useEffect(() => {
@@ -63,7 +58,7 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
         if (!isHappyHour()) {
           toast({
             title: 'Invalid Timing',
-            description: 'HH99 is only valid Mon-Fri, 11 AM - 4 PM',
+            description: 'HH99 is only valid Mon-Fri, 11 AM - 5 PM',
             variant: 'destructive',
           });
           setSelectedCoupon('none');
@@ -234,7 +229,7 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
                 <SelectContent>
                   <SelectItem value="none">No coupon - Regular Price</SelectItem>
                   <SelectItem value="HH99">
-                    🎮 HH99 - ₹99/hour (Mon-Fri 11AM-4PM)
+                    🎮 HH99 - ₹99/hour (Mon-Fri 11AM-5PM)
                   </SelectItem>
                   <SelectItem value="CUEPHORIA25">
                     🎉 CUEPHORIA25 - 25% OFF
@@ -258,7 +253,7 @@ const StartSessionDialog: React.FC<StartSessionDialogProps> = ({
                 <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-md p-3 flex items-start gap-2">
                   <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
                   <p className="text-sm text-amber-900 dark:text-amber-100">
-                    <strong>Note:</strong> HH99 is only valid Mon-Fri, 11 AM - 4 PM. Currently outside Happy Hour.
+                    <strong>Note:</strong> HH99 is only valid Mon-Fri, 11 AM - 5 PM. Currently outside Happy Hour.
                   </p>
                 </div>
               )}

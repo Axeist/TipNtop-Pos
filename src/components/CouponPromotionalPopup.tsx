@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { isHappyHourNow } from '@/utils/happyHour';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -87,15 +88,12 @@ const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCoupo
     icon: GraduationCap
   };
 
-  // Check if current time is during happy hours (11 AM - 4 PM)
-  const now = new Date();
-  const currentHour = now.getHours();
-  const isHappyHour = currentHour >= 11 && currentHour < 16;
+  const isHappyHour = isHappyHourNow();
 
   const popup3Content = {
     title: "HAPPY HOUR SPECIAL! ⏰",
     discountText: "₹99/HR",
-    description: `Get PS5 & 8-Ball stations at just ₹99/hour during Happy Hours (11 AM - 4 PM)! Can be stacked with NIT50 for even better deals!`,
+    description: `Get PS5 & 8-Ball stations at just ₹99/hour during Happy Hours (11 AM - 5 PM)! Can be stacked with NIT50 for even better deals!`,
     couponCode: "HH99",
     bgColor: "from-green-400 to-teal-500",
     iconColor: "text-green-400",
@@ -105,8 +103,9 @@ const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCoupo
 
   const popup4Content = {
     title: "HAPPY HOURS COUPON! ⏰",
-    discountText: "TABLES ₹149 · PS5 ₹99",
-    description: "Use code NERFTURFHH: Tables (8-Ball) at ₹149/hr, PS5 at ₹99/hr. Valid Mon–Fri 11 AM – 4 PM only.",
+    discountText: "STD TABLE ₹200 · OTHER ₹149 · PS5 ₹99",
+    description:
+      "Use code NERFTURFHH: Standard table ₹200/hr, other tables ₹149/hr, PS5 ₹99/hr. Valid Mon–Fri 11 AM – 5 PM only.",
     couponCode: "NERFTURFHH",
     bgColor: "from-amber-400 to-orange-500",
     iconColor: "text-amber-400",
@@ -158,7 +157,7 @@ const CouponPromotionalPopup: React.FC<CouponPromotionalPopupProps> = ({ onCoupo
                   ) : (
                     <>
                       <AlertCircle className="h-4 w-4 text-orange-400" />
-                      <span className="font-semibold">⏰ Outside Happy Hours (11 AM - 4 PM)</span>
+                      <span className="font-semibold">⏰ Outside Happy Hours (11 AM - 5 PM)</span>
                     </>
                   )}
                 </div>

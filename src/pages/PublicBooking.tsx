@@ -42,7 +42,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { format, parse, getDay } from "date-fns";
+import { format, parse } from "date-fns";
+import { isHappyHour } from "@/utils/happyHour";
+import { getNerfTurfHHTableHourlyRate } from "@/utils/nerfTurfHH";
 
 /* =========================
    Types
@@ -91,13 +93,6 @@ const INR = (n: number) =>
 
 const genTxnId = () =>
   `CUE-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
-
-const isHappyHour = (date: Date, slot: TimeSlot | null) => {
-  if (!slot) return false;
-  const day = getDay(date);
-  const startHour = Number(slot.start_time.split(":")[0]);
-  return day >= 1 && day <= 5 && startHour >= 11 && startHour < 16;
-};
 
 // ✅ NEW: Phone number normalization
 const normalizePhoneNumber = (phone: string): string => {
@@ -218,7 +213,7 @@ export default function PublicBooking() {
       setAppliedCoupons((prev) => {
         const copy = { ...prev };
         delete copy["8ball"];
-        toast.error("❌ HH99 removed: valid only Mon–Fri 11 AM–4 PM");
+        toast.error("❌ HH99 removed: valid only Mon–Fri 11 AM–5 PM");
         return copy;
       });
     }
@@ -226,7 +221,7 @@ export default function PublicBooking() {
       setAppliedCoupons((prev) => {
         const copy = { ...prev };
         delete copy["ps5"];
-        toast.error("❌ HH99 removed: valid only Mon–Fri 11 AM–4 PM");
+        toast.error("❌ HH99 removed: valid only Mon–Fri 11 AM–5 PM");
         return copy;
       });
     }
@@ -235,7 +230,7 @@ export default function PublicBooking() {
         const copy = { ...prev };
         delete copy["8ball"];
         delete copy["ps5"];
-        toast.error("❌ NERFTURFHH removed: valid only Mon–Fri 11 AM–4 PM");
+        toast.error("❌ NERFTURFHH removed: valid only Mon–Fri 11 AM–5 PM");
         return copy;
       });
     }
@@ -631,8 +626,9 @@ export default function PublicBooking() {
   );
 
   const couponDescriptions: Record<string, string> = {
-    NERFTURFHH: "Happy Hours: Tables ₹149/hr, PS5 ₹99/hr. Mon–Fri 11 AM–4 PM.",
-    HH99: "PS5 & 8-Ball at ₹99/hr. Mon–Fri 11 AM–4 PM.",
+    NERFTURFHH:
+      "Happy Hours: Standard table ₹200/hr, other tables ₹149/hr, PS5 ₹99/hr. Mon–Fri 11 AM–5 PM.",
+    HH99: "PS5 & 8-Ball at ₹99/hr. Mon–Fri 11 AM–5 PM.",
     NerfTurf25: "25% off your booking.",
     NerfTurf50: "50% off for students with valid ID.",
     NIT50: "50% off on PS5, 8-Ball & VR.",
@@ -714,7 +710,7 @@ export default function PublicBooking() {
         return;
       }
       if (!happyHourActive) {
-        toast.error("🕒 HH99 valid only Mon–Fri 11 AM to 4 PM (Happy Hours).");
+        toast.error("🕒 HH99 valid only Mon–Fri 11 AM to 5 PM (Happy Hours).");
         return;
       }
       setAppliedCoupons((prev) => {
@@ -739,7 +735,7 @@ export default function PublicBooking() {
         return;
       }
       if (!happyHourActive) {
-        toast.error("🕒 NERFTURFHH valid only Mon–Fri 11 AM to 4 PM (Happy Hours).");
+        toast.error("🕒 NERFTURFHH valid only Mon–Fri 11 AM to 5 PM (Happy Hours).");
         return;
       }
       setAppliedCoupons((prev) => {
@@ -749,7 +745,7 @@ export default function PublicBooking() {
         return updated;
       });
       toast.success(
-        "⏰ NERFTURFHH applied! Tables at ₹149/hr, PS5 at ₹99/hr (Mon–Fri 11 AM–4 PM)! ✨"
+        "⏰ NERFTURFHH applied! Standard table ₹200/hr, other tables ₹149/hr, PS5 ₹99/hr (Mon–Fri 11 AM–5 PM)! ✨"
       );
       return;
     }
@@ -897,8 +893,12 @@ export default function PublicBooking() {
         const eightBalls = stations.filter(
           (s) => selectedStations.includes(s.id) && s.type === "8ball"
         );
-        const sum = eightBalls.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum - eightBalls.length * 149;
+        let d = 0;
+        for (const s of eightBalls) {
+          const target = getNerfTurfHHTableHourlyRate(s);
+          const stationD = Math.max(0, s.hourly_rate - target);
+          d += stationD;
+        }
         if (d > 0) {
           totalDiscount += d;
           breakdown["8-Ball (NERFTURFHH)"] = d;
@@ -2186,12 +2186,12 @@ export default function PublicBooking() {
                         <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-gray-300 space-y-1">
                           {Object.values(appliedCoupons).some((c) => c === "NERFTURFHH") && (
                             <p>
-                              <span className="font-semibold text-amber-300">NERFTURFHH</span>: Happy Hours — Tables (8-Ball) at ₹149/hr, PS5 at ₹99/hr. Valid Mon–Fri 11 AM–4 PM only.
+                              <span className="font-semibold text-amber-300">NERFTURFHH</span>: Happy Hours — Standard table ₹200/hr, other tables ₹149/hr, PS5 at ₹99/hr. Valid Mon–Fri 11 AM–5 PM only.
                             </p>
                           )}
                           {Object.values(appliedCoupons).some((c) => c === "HH99") && (
                             <p>
-                              <span className="font-semibold text-amber-300">HH99</span>: PS5 &amp; 8-Ball at ₹99/hr during Happy Hours (Mon–Fri 11 AM–4 PM).
+                              <span className="font-semibold text-amber-300">HH99</span>: PS5 &amp; 8-Ball at ₹99/hr during Happy Hours (Mon–Fri 11 AM–5 PM).
                             </p>
                           )}
                           {Object.values(appliedCoupons).some((c) => c === "NerfTurf25") && (
