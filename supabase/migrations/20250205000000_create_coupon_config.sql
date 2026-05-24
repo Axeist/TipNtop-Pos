@@ -8,16 +8,14 @@ CREATE TABLE IF NOT EXISTS public.coupon_config (
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 
--- Seed existing coupons and NERFTURFHH (Happy Hours: tables ₹149/hr, PS5 ₹99/hr, Mon–Fri 11 AM–4 PM)
+-- Seed existing coupons
 INSERT INTO public.coupon_config (code, enabled, show_popup) VALUES
   ('TES1342', true, false),
   ('NerfTurf25', true, false),
   ('NerfTurf50', true, false),
-  ('HH99', true, false),
   ('NIT50', true, false),
   ('ALMA50', true, false),
-  ('AXEIST', true, false),
-  ('NERFTURFHH', true, true)
+  ('AXEIST', true, false)
 ON CONFLICT (code) DO NOTHING;
 
 -- Optional: trigger to bump updated_at

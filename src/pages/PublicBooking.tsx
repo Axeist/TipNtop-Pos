@@ -43,11 +43,6 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { format, parse } from "date-fns";
-import { isHappyHour } from "@/utils/happyHour";
-import {
-  getNerfTurfHHTableHourlyRate,
-  NERFTURFHH_PS5_HOURLY,
-} from "@/utils/nerfTurfHH";
 
 /* =========================
    Types
@@ -210,34 +205,6 @@ export default function PublicBooking() {
   }, []);
 
   const { enabledCodes: couponEnabledCodes, popupCouponCodes } = useCouponConfig();
-
-  useEffect(() => {
-    if (appliedCoupons["8ball"] === "HH99" && !isHappyHour(selectedDate, selectedSlot)) {
-      setAppliedCoupons((prev) => {
-        const copy = { ...prev };
-        delete copy["8ball"];
-        toast.error("❌ HH99 removed: valid only Mon–Fri 11 AM–5 PM");
-        return copy;
-      });
-    }
-    if (appliedCoupons["ps5"] === "HH99" && !isHappyHour(selectedDate, selectedSlot)) {
-      setAppliedCoupons((prev) => {
-        const copy = { ...prev };
-        delete copy["ps5"];
-        toast.error("❌ HH99 removed: valid only Mon–Fri 11 AM–5 PM");
-        return copy;
-      });
-    }
-    if ((appliedCoupons["8ball"] === "NERFTURFHH" || appliedCoupons["ps5"] === "NERFTURFHH") && !isHappyHour(selectedDate, selectedSlot)) {
-      setAppliedCoupons((prev) => {
-        const copy = { ...prev };
-        delete copy["8ball"];
-        delete copy["ps5"];
-        toast.error("❌ NERFTURFHH removed: valid only Mon–Fri 11 AM–5 PM");
-        return copy;
-      });
-    }
-  }, [selectedDate, selectedSlot, appliedCoupons]);
 
   useEffect(() => {
     const ch = supabase
@@ -618,20 +585,15 @@ export default function PublicBooking() {
     "TES1342",
     "NerfTurf25",
     "NerfTurf50",
-    "HH99",
     "NIT50",
     "ALMA50",
     "AXEIST",
-    "NERFTURFHH",
   ];
   const allowedCoupons = allCouponCodes.filter((code) =>
     couponEnabledCodes.includes(code)
   );
 
   const couponDescriptions: Record<string, string> = {
-    NERFTURFHH:
-      "Happy Hours: Standard table ₹200/hr, other tables ₹150/hr, PS5 ₹100/hr. Mon–Fri 11 AM–5 PM.",
-    HH99: "PS5 & 8-Ball at ₹99/hr. Mon–Fri 11 AM–5 PM.",
     NerfTurf25: "25% off your booking.",
     NerfTurf50: "50% off for students with valid ID.",
     NIT50: "50% off on PS5, 8-Ball & VR.",
@@ -670,8 +632,6 @@ export default function PublicBooking() {
     const selectedHasVR = selectedStations.some(
       (id) => stations.find((s) => s.id === id && s.type === "vr")
     );
-    const happyHourActive = isHappyHour(selectedDate, selectedSlot);
-
     if (code === "TES1342") {
       setAppliedCoupons({ all: "TES1342" });
       toast.success("🧪 TES1342 applied: Test coupon - Price set to ₹1 for payment testing!");
@@ -703,56 +663,6 @@ export default function PublicBooking() {
       return;
     }
 
-    if (code === "HH99") {
-      if (selectedHasVR) {
-        toast.error("⏰ HH99 is not applicable to VR gaming stations.");
-        return;
-      }
-      if (!(selectedHas8Ball || selectedHasPS5)) {
-        toast.error("⏰ HH99 applies to PS5 and 8-Ball stations during Happy Hours.");
-        return;
-      }
-      if (!happyHourActive) {
-        toast.error("🕒 HH99 valid only Mon–Fri 11 AM to 5 PM (Happy Hours).");
-        return;
-      }
-      setAppliedCoupons((prev) => {
-        let updated = { ...prev };
-        if (selectedHas8Ball) updated["8ball"] = "HH99";
-        if (selectedHasPS5) updated["ps5"] = "HH99";
-        return updated;
-      });
-      toast.success(
-        "⏰ HH99 applied! PS5 & 8-Ball stations at ₹99/hour during Happy Hours! ✨"
-      );
-      return;
-    }
-
-    if (code === "NERFTURFHH") {
-      if (selectedHasVR) {
-        toast.error("⏰ NERFTURFHH is not applicable to VR gaming stations.");
-        return;
-      }
-      if (!(selectedHas8Ball || selectedHasPS5)) {
-        toast.error("⏰ NERFTURFHH applies to Tables (8-Ball) and PS5 during Happy Hours.");
-        return;
-      }
-      if (!happyHourActive) {
-        toast.error("🕒 NERFTURFHH valid only Mon–Fri 11 AM to 5 PM (Happy Hours).");
-        return;
-      }
-      setAppliedCoupons((prev) => {
-        let updated = { ...prev };
-        if (selectedHas8Ball) updated["8ball"] = "NERFTURFHH";
-        if (selectedHasPS5) updated["ps5"] = "NERFTURFHH";
-        return updated;
-      });
-      toast.success(
-        "⏰ NERFTURFHH applied! Standard table ₹200/hr, other tables ₹150/hr, PS5 ₹100/hr (Mon–Fri 11 AM–5 PM)! ✨"
-      );
-      return;
-    }
-
     if (code === "NIT50") {
       if (!(selectedHas8Ball || selectedHasPS5 || selectedHasVR)) {
         toast.error(
@@ -763,7 +673,7 @@ export default function PublicBooking() {
       setAppliedCoupons((prev) => {
         let updated = { ...prev };
         if (selectedHasPS5) updated["ps5"] = "NIT50";
-        if (selectedHas8Ball) updated["8ball"] = (prev["8ball"] === "HH99" || prev["8ball"] === "NERFTURFHH") ? prev["8ball"] : "NIT50";
+        if (selectedHas8Ball) updated["8ball"] = "NIT50";
         if (selectedHasVR) updated["vr"] = "NIT50";
         return updated;
       });
@@ -847,107 +757,34 @@ export default function PublicBooking() {
     let totalDiscount = 0;
     const breakdown: Record<string, number> = {};
 
-    if (
-      appliedCoupons["8ball"] === "HH99" &&
-      appliedCoupons["ps5"] === "NIT50"
-    ) {
-      const eightBalls = stations.filter(
+    if (appliedCoupons["8ball"] === "NIT50" || appliedCoupons["8ball"] === "ALMA50") {
+      const balls = stations.filter(
         (s) => selectedStations.includes(s.id) && s.type === "8ball"
       );
-      const sum = eightBalls.reduce((x, s) => x + s.hourly_rate, 0);
-      const d = sum - eightBalls.length * 99;
-      if (d > 0) {
-        totalDiscount += d;
-        breakdown["8-Ball (HH99)"] = d;
-      }
+      const sum = balls.reduce((x, s) => x + s.hourly_rate, 0);
+      const d = sum * 0.5;
+      totalDiscount += d;
+      breakdown[`8-Ball (${appliedCoupons["8ball"]})`] = d;
+    }
+
+    if (appliedCoupons["ps5"] === "NIT50" || appliedCoupons["ps5"] === "ALMA50") {
       const ps5s = stations.filter(
         (s) => selectedStations.includes(s.id) && s.type === "ps5"
       );
-      const sum2 = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
-      const d2 = sum2 - ps5s.length * 75;
-      totalDiscount += d2;
-      breakdown["PS5 (HH99+NIT50)"] = d2;
-    } else {
-      if (appliedCoupons["8ball"] === "HH99") {
-        const eightBalls = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "8ball"
-        );
-        const sum = eightBalls.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum - eightBalls.length * 99;
-        if (d > 0) {
-          totalDiscount += d;
-          breakdown["8-Ball (HH99)"] = d;
-        }
-      }
+      const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
+      const d = sum * 0.5;
+      totalDiscount += d;
+      breakdown[`PS5 (${appliedCoupons["ps5"]})`] = d;
+    }
 
-      if (appliedCoupons["ps5"] === "HH99") {
-        const ps5s = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "ps5"
-        );
-        const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum - ps5s.length * 99;
-        if (d > 0) {
-          totalDiscount += d;
-          breakdown["PS5 (HH99)"] = d;
-        }
-      }
-
-      if (appliedCoupons["8ball"] === "NERFTURFHH") {
-        const eightBalls = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "8ball"
-        );
-        let d = 0;
-        for (const s of eightBalls) {
-          const target = getNerfTurfHHTableHourlyRate(s);
-          const stationD = Math.max(0, s.hourly_rate - target);
-          d += stationD;
-        }
-        if (d > 0) {
-          totalDiscount += d;
-          breakdown["8-Ball (NERFTURFHH)"] = d;
-        }
-      }
-      if (appliedCoupons["ps5"] === "NERFTURFHH") {
-        const ps5s = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "ps5"
-        );
-        const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum - ps5s.length * NERFTURFHH_PS5_HOURLY;
-        if (d > 0) {
-          totalDiscount += d;
-          breakdown["PS5 (NERFTURFHH)"] = d;
-        }
-      }
-
-      if (appliedCoupons["8ball"] === "NIT50" || appliedCoupons["8ball"] === "ALMA50") {
-        const balls = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "8ball"
-        );
-        const sum = balls.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum * 0.5;
-        totalDiscount += d;
-        breakdown[`8-Ball (${appliedCoupons["8ball"]})`] = d;
-      }
-
-      if (appliedCoupons["ps5"] === "NIT50" || appliedCoupons["ps5"] === "ALMA50") {
-        const ps5s = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "ps5"
-        );
-        const sum = ps5s.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum * 0.5;
-        totalDiscount += d;
-        breakdown[`PS5 (${appliedCoupons["ps5"]})`] = d;
-      }
-
-      if (appliedCoupons["vr"] === "NIT50" || appliedCoupons["vr"] === "ALMA50") {
-        const vrStations = stations.filter(
-          (s) => selectedStations.includes(s.id) && s.type === "vr"
-        );
-        const sum = vrStations.reduce((x, s) => x + s.hourly_rate, 0);
-        const d = sum * 0.5;
-        totalDiscount += d;
-        breakdown[`VR (${appliedCoupons["vr"]})`] = d;
-      }
+    if (appliedCoupons["vr"] === "NIT50" || appliedCoupons["vr"] === "ALMA50") {
+      const vrStations = stations.filter(
+        (s) => selectedStations.includes(s.id) && s.type === "vr"
+      );
+      const sum = vrStations.reduce((x, s) => x + s.hourly_rate, 0);
+      const d = sum * 0.5;
+      totalDiscount += d;
+      breakdown[`VR (${appliedCoupons["vr"]})`] = d;
     }
 
     return { total: totalDiscount, breakdown };
@@ -1605,8 +1442,8 @@ export default function PublicBooking() {
       </div>
 
       {/* Coupon Promotional Popup: only show when a coupon has show_popup enabled in Booking Management */}
-      {popupCouponCodes.includes("NERFTURFHH") && (
-        <CouponPromotionalPopup onCouponSelect={applyCoupon} activeCoupon="NERFTURFHH" />
+      {popupCouponCodes.length > 0 && (
+        <CouponPromotionalPopup onCouponSelect={applyCoupon} />
       )}
 
       <header className="py-10 px-4 sm:px-6 md:px-8 relative z-10">
@@ -2068,9 +1905,7 @@ export default function PublicBooking() {
                     <div className="mt-2 space-y-2">
                       {Object.entries(appliedCoupons).map(([key, val]) => {
                         let emoji = "🏷️";
-                        if (val === "HH99") emoji = "⏰";
-                        else if (val === "NERFTURFHH") emoji = "⏰";
-                        else if (val === "NIT50") emoji = "🎓";
+                        if (val === "NIT50") emoji = "🎓";
                         else if (val === "NerfTurf25") emoji = "🎉";
                         else if (val === "NerfTurf50") emoji = "📚";
                         else if (val === "ALMA50") emoji = "🏫";
@@ -2187,16 +2022,6 @@ export default function PublicBooking() {
                       {/* Coupon explanation in booking summary */}
                       {Object.values(appliedCoupons).length > 0 && (
                         <div className="rounded-lg border border-white/10 bg-white/5 p-3 text-xs text-gray-300 space-y-1">
-                          {Object.values(appliedCoupons).some((c) => c === "NERFTURFHH") && (
-                            <p>
-                              <span className="font-semibold text-amber-300">NERFTURFHH</span>: Happy Hours — Standard table ₹200/hr, other tables ₹150/hr, PS5 at ₹100/hr. Valid Mon–Fri 11 AM–5 PM only.
-                            </p>
-                          )}
-                          {Object.values(appliedCoupons).some((c) => c === "HH99") && (
-                            <p>
-                              <span className="font-semibold text-amber-300">HH99</span>: PS5 &amp; 8-Ball at ₹99/hr during Happy Hours (Mon–Fri 11 AM–5 PM).
-                            </p>
-                          )}
                           {Object.values(appliedCoupons).some((c) => c === "NerfTurf25") && (
                             <p><span className="font-semibold text-amber-300">NerfTurf25</span>: 25% off total.</p>
                           )}
